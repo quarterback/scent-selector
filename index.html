@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fragrance of the Day</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
+        select, button { margin: 10px; padding: 10px; font-size: 16px; }
+        #result { margin-top: 20px; font-size: 20px; font-weight: bold; }
+    </style>
+</head>
+<body>
+    <h1>Fragrance of the Day</h1>
+    <label for="season">Select Season:</label>
+    <select id="season">
+        <option value="Spring/Summer">Spring/Summer</option>
+        <option value="Fall/Winter">Fall/Winter</option>
+        <option value="All Seasons">All Seasons</option>
+    </select>
+
+    <label for="occasion">Select Occasion:</label>
+    <select id="occasion">
+        <option value="Work">Work</option>
+        <option value="Going Out/Date">Going Out/Date</option>
+        <option value="Crowded Spaces">Crowded Spaces</option>
+        <option value="Casual Outdoor">Casual Outdoor</option>
+    </select>
+
+    <button onclick="pickFragrance()">Pick Fragrance</button>
+    <div id="result"></div>
+
+    <script>
+        const fragrances = [
+            { name: "A Grove by the Sea", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Rouge Smoking (Extrait)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "The One Luminous Night", season: "Fall/Winter", occasion: "Work" },
+            { name: "Poudrextase", season: "Spring/Summer", occasion: "Work" },
+            { name: "Apricot in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Kasbah", season: "Fall/Winter", occasion: "Work" },
+            { name: "Casablanca", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Quercus", season: "Spring/Summer", occasion: "Work" },
+            { name: "Eau de Magnolia", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Barcelona", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Crush Balls", season: "Spring/Summer", occasion: "Going Out/Date" },
+            { name: "Notturno", season: "Fall/Winter", occasion: "Work" },
+            { name: "Russian Tea", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "The Architects Club", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "To My Father", season: "Fall/Winter", occasion: "Work" },
+            { name: "Sydney Rock Pool", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Bois d'Ascèse", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Radio Bombay", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Dark Wave", season: "Fall/Winter", occasion: "Crowded Spaces" },
+            { name: "Indigo Smoke", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Poets of Berlin", season: "Spring/Summer", occasion: "Work" },
+            { name: "Morning Chess", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Do Not Disturb", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Green Spell", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Nordic Noir", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Say Yes", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Black Afgano (Extrait de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Ingenious Ginger", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Assam of India", season: "Spring/Summer", occasion: "Casual Outdoor" }
+        ];
+
+        function pickFragrance() {
+            const season = document.getElementById("season").value;
+            const occasion = document.getElementById("occasion").value;
+            const filtered = fragrances.filter(f => f.season.includes(season) && f.occasion === occasion);
+            const selection = filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)].name : "No exact match, choose freely!";
+            document.getElementById("result").innerText = "Today's Fragrance: " + selection;
+        }
+    </script>
+</body>
+</html>
