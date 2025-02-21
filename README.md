@@ -1,7 +1,7 @@
 # Fragrance of the Day Randomizer
 
 ## Overview
-This is a simple web-based fragrance randomizer that helps you select a fragrance based on the **season** and **occasion**. It randomly picks a perfume from your personal collection based on the filters you set.
+This is a simple web-based fragrance randomizer that helps you select a fragrance based on the **season** and **occasion**. Right now, it's populated with stuff from my collection, but you could fork this and make it work for yours too. 
 
 ## Features
 - Select **season** (Spring/Summer, Fall/Winter, All Seasons)
@@ -29,6 +29,7 @@ You can host this project on:
 
 ## Future Improvements
 - Convert to a standalone JavaScript file for better maintainability.
+- Move to 4 seasons instead of 2, adding more occasions
 - Add more detailed filtering (e.g., fragrance families, intensity levels).
 - Improve UI styling with CSS frameworks like Bootstrap or Tailwind.
 
