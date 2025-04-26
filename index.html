@@ -8,15 +8,17 @@
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.5.0/dist/full.css" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </head>
-<body class="min-h-screen bg-base-200 text-base-content flex items-center justify-center px-4">
-  <div class="w-full max-w-lg bg-base-100 rounded-xl shadow-xl p-6 space-y-6">
-    <h1 class="text-2xl font-bold text-center text-primary">Fragrance of the Day</h1>
-    <p>Overengineering a solution to a decision fatigue problem...</p>
+<body class="bg-base-200 text-base-content">
+  <main class="min-h-screen flex items-center justify-center px-4 py-12">
+    <div class="w-full max-w-xl bg-base-100 rounded-lg shadow-lg p-8 space-y-6">
+      <div class="text-center">
+        <h1 class="text-3xl font-bold text-primary mb-2">Ron's Fragrance of the Day</h1>
+        <p class="text-sm text-base-content/70">Overengineering a solution to a decision fatigue problem</p>
+      </div>
 
-    <div class="space-y-4">
       <div class="form-control">
         <label class="label" for="season">
-          <span class="label-text font-medium"><i class="fas fa-calendar-alt mr-2"></i>Select Season</span>
+          <span class="label-text font-medium"><i class="fas fa-calendar-alt mr-2"></i>Season</span>
         </label>
         <select id="season" class="select select-bordered">
           <option value="Spring/Summer">Spring/Summer</option>
@@ -27,7 +29,7 @@
 
       <div class="form-control">
         <label class="label" for="occasion">
-          <span class="label-text font-medium"><i class="fas fa-user-tie mr-2"></i>Select Occasion</span>
+          <span class="label-text font-medium"><i class="fas fa-user-tie mr-2"></i>Occasion</span>
         </label>
         <select id="occasion" class="select select-bordered">
           <option value="Work">Work</option>
@@ -37,24 +39,18 @@
         </select>
       </div>
 
-      <button id="pickBtn" class="btn btn-primary w-full"><i class="fas fa-spray-can mr-2"></i>Pick Fragrance</button>
+      <button id="pickBtn" class="btn btn-primary w-full">
+        <i class="fas fa-spray-can mr-2"></i>Pick Fragrance
+      </button>
+
+      <div id="result" class="text-center text-xl font-semibold text-primary pt-4 min-h-[40px]"></div>
+
+      <p class="text-center text-sm text-base-content/60 pt-6">
+        Built by Ron. 
+        <a href="https://github.com/YOUR_REPO_LINK_HERE" target="_blank" class="link link-hover text-primary font-medium ml-1">View on GitHub</a>
+      </p>
     </div>
-
-    <div id="result" class="text-xl font-semibold text-primary text-center min-h-[40px]"></div>
-
-    <div class="collapse collapse-arrow border border-base-300 rounded-box">
-      <input type="checkbox" class="peer">
-      <div class="collapse-title font-medium">Previous Selections</div>
-      <div class="collapse-content">
-        <ul id="history-list" class="text-sm space-y-2 max-h-40 overflow-y-auto"></ul>
-        <button id="clearHistoryBtn" class="btn btn-sm btn-ghost mt-3">Clear history</button>
-      </div>
-    </div>
-
-    <footer class="text-center text-sm text-base-content/60 pt-4 border-t border-base-300">
-     <a href="https://github.com/quarterback/scent-selector">Fork the repo here</a> for your own collection.
-    </footer>
-  </div>
+  </main>
 
   <script>
     const fragrances = [
@@ -109,61 +105,23 @@
       { name: "Assam of India", season: "Spring/Summer", occasion: "Casual Outdoor" }
     ];
 
-    const pickBtn = document.getElementById('pickBtn');
-    const resultEl = document.getElementById('result');
-    const loadingEl = document.getElementById('loading');
-    const historyEl = document.getElementById('history-list');
-    const clearBtn = document.getElementById('clearHistoryBtn');
+    document.getElementById("pickBtn").addEventListener("click", () => {
+      const season = document.getElementById("season").value;
+      const occasion = document.getElementById("occasion").value;
+      const result = document.getElementById("result");
 
-    document.getElementById('current-year').textContent = new Date().getFullYear();
+      const matches = fragrances.filter(f =>
+        (f.season === season || f.season === "All Seasons" || season === "All Seasons") &&
+        f.occasion === occasion
+      );
 
-    function loadHistory() {
-      const history = JSON.parse(localStorage.getItem('fragranceHistory')) || [];
-      historyEl.innerHTML = '';
-      if (history.length === 0) {
-        historyEl.innerHTML = '<li class="text-base-content/60">No selections yet</li>';
-        return;
+      if (matches.length > 0) {
+        const pick = matches[Math.floor(Math.random() * matches.length)].name;
+        result.textContent = `Today's Fragrance: ${pick}`;
+      } else {
+        result.textContent = "No match found. Try different criteria.";
       }
-      history.forEach(h => {
-        const li = document.createElement('li');
-        li.innerHTML = `<span class="font-medium">${h.fragrance}</span><br><span class="text-xs">${h.season} • ${h.occasion}</span>`;
-        historyEl.appendChild(li);
-      });
-    }
-
-    function pickFragrance() {
-      const season = document.getElementById('season').value;
-      const occasion = document.getElementById('occasion').value;
-      loadingEl.classList.remove('hidden');
-      resultEl.textContent = '';
-
-      setTimeout(() => {
-        const matches = fragrances.filter(f =>
-          (f.season === season || f.season === 'All Seasons' || season === 'All Seasons') &&
-          f.occasion === occasion
-        );
-        let text = 'No match found.';
-        if (matches.length > 0) {
-          const selected = matches[Math.floor(Math.random() * matches.length)];
-          text = `Today's Fragrance: ${selected.name}`;
-          const history = JSON.parse(localStorage.getItem('fragranceHistory')) || [];
-          history.unshift({ fragrance: selected.name, season, occasion });
-          if (history.length > 10) history.pop();
-          localStorage.setItem('fragranceHistory', JSON.stringify(history));
-          loadHistory();
-        }
-        resultEl.textContent = text;
-        loadingEl.classList.add('hidden');
-      }, 600);
-    }
-
-    pickBtn.addEventListener('click', pickFragrance);
-    clearBtn.addEventListener('click', () => {
-      localStorage.removeItem('fragranceHistory');
-      loadHistory();
     });
-
-    loadHistory();
   </script>
 </body>
 </html>
