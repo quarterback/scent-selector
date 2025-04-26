@@ -1,133 +1,216 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Ron's Fragrance of the Day</title>
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.5/dist/tailwind.min.css" rel="stylesheet" />
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.5.0/dist/full.css" rel="stylesheet" />
-  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
-  <style>
-    html, body {
-      font-family: system-ui, sans-serif;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ron's Fragrance Selector</title>
+    <style>
+        body { 
+            font-family: 'Helvetica Neue', Arial, sans-serif; 
+            background-color: #f5f5f5;
+            color: #333;
+            text-align: center; 
+            padding: 40px 20px; 
+            max-width: 500px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+        
+        h1 {
+            font-size: 28px;
+            margin-bottom: 30px;
+            color: #222;
+        }
+        
+        .selector-container {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 8px;
+            text-align: left;
+        }
+        
+        select { 
+            width: 100%;
+            padding: 12px;
+            font-size: 16px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: white;
+            -webkit-appearance: none;
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%23333' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 16px;
+        }
+        
+        button { 
+            width: 100%;
+            padding: 14px; 
+            font-size: 16px;
+            background-color: #4a6fa5;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 500;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #3a5a80;
+        }
+        
+        #result { 
+            margin-top: 30px; 
+            font-size: 20px; 
+            min-height: 80px;
+            font-weight: bold;
+            color: #4a6fa5;
+            transition: all 0.3s ease;
+        }
+        
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(74, 111, 165, 0.3);
+            border-radius: 50%;
+            border-top-color: #4a6fa5;
+            animation: spin 1s ease infinite;
+            margin-right: 10px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.5s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
 </head>
-<body class="bg-base-200 text-base-content">
-  <main class="min-h-screen flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-2xl bg-base-100 rounded-md shadow-lg p-8 space-y-4">
-      <div class="text-center">
-        <h1 class="text-3xl font-bold text-primary mb-1">Ron's Fragrance of the Day</h1>
-        <p class="text-sm text-base-content/70">Overengineering a solution to a decision fatigue problem</p>
-      </div>
-
-      <div class="grid gap-4 md:grid-cols-2">
-        <div class="form-control">
-          <label class="label" for="season">
-            <span class="label-text font-medium">Season</span>
-          </label>
-          <select id="season" class="select select-bordered">
-            <option value="Spring/Summer">Spring/Summer</option>
-            <option value="Fall/Winter">Fall/Winter</option>
-            <option value="All Seasons">All Seasons</option>
-          </select>
+<body>
+    <h1>Ron's Fragrance Selector</h1>
+    
+    <div class="selector-container">
+        <div class="form-group">
+            <label for="season">Select Season:</label>
+            <select id="season">
+                <option value="Spring/Summer">Spring/Summer</option>
+                <option value="Fall/Winter">Fall/Winter</option>
+                <option value="All Seasons">All Seasons</option>
+            </select>
         </div>
 
-        <div class="form-control">
-          <label class="label" for="occasion">
-            <span class="label-text font-medium">Occasion</span>
-          </label>
-          <select id="occasion" class="select select-bordered">
-            <option value="Work">Work</option>
-            <option value="Going Out/Date">Going Out/Date</option>
-            <option value="Crowded Spaces">Crowded Spaces</option>
-            <option value="Casual Outdoor">Casual Outdoor</option>
-          </select>
+        <div class="form-group">
+            <label for="occasion">Select Occasion:</label>
+            <select id="occasion">
+                <option value="Work">Work</option>
+                <option value="Going Out/Date">Going Out/Date</option>
+                <option value="Crowded Spaces">Crowded Spaces</option>
+                <option value="Casual Outdoor">Casual Outdoor</option>
+            </select>
         </div>
-      </div>
 
-      <div class="pt-2">
-        <button id="pickBtn" class="btn w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold">
-          <i class="fas fa-spray-can mr-2"></i>Pick Fragrance
-        </button>
-      </div>
-
-      <div id="result" class="text-center text-lg font-semibold text-primary pt-4 min-h-[32px]"></div>
-
-      <div class="text-center text-sm text-base-content/60 pt-6">
-        Built by Ron.
-        <a href="https://github.com/YOUR_REPO_LINK" target="_blank" class="link link-hover text-primary font-medium ml-1">View on GitHub</a>
-      </div>
+        <button onclick="pickFragrance()">Pick Fragrance</button>
     </div>
-  </main>
+    
+    <div id="result"></div>
+    
+    <script>
+        const fragrances = [
+            { name: "A Grove by the Sea", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Rouge Smoking (Extrait)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "The One Luminous Night", season: "Fall/Winter", occasion: "Work" },
+            { name: "Poudrextase", season: "Spring/Summer", occasion: "Work" },
+            { name: "Apricot in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Kasbah", season: "Fall/Winter", occasion: "Work" },
+            { name: "Casablanca", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Quercus", season: "Spring/Summer", occasion: "Work" },
+            { name: "Eau de Magnolia", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Barcelona", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Crush Balls", season: "Spring/Summer", occasion: "Going Out/Date" },
+            { name: "Notturno", season: "Fall/Winter", occasion: "Work" },
+            { name: "Russian Tea", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "The Architects Club", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "To My Father", season: "Fall/Winter", occasion: "Work" },
+            { name: "Sydney Rock Pool", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Bois d'Ascèse", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Radio Bombay", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Dark Wave", season: "Fall/Winter", occasion: "Crowded Spaces" },
+            { name: "Indigo Smoke", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Poets of Berlin", season: "Spring/Summer", occasion: "Work" },
+            { name: "Morning Chess", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Do Not Disturb", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Green Spell", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Nordic Noir", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Say Yes", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Collection Grands Crus - Azur Riviera", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Collection Grands Crus - Oud Al Sahraa", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Collection Grands Crus - Hoja de Cuba", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Collection Grands Crus - Russkaya Кожа", season: "Fall/Winter", occasion: "Work" },
+            { name: "Vetiverissimo", season: "Spring/Summer", occasion: "Work" },
+            { name: "Iris Cendré", season: "Spring/Summer", occasion: "Work" },
+            { name: "Cologne du Maghreb (2021)", season: "All Seasons", occasion: "Casual Outdoor" },
+            { name: "Unsettled", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Ummagumma", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Silky Woods", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Delphi (Huile Parfum)", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Cashmeran in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Overnight (Eau de Parfum)", season: "All Seasons", occasion: "Work" },
+            { name: "Toji", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Pine in Acacia", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Ebony in Oak", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Bohemian Lime", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Sexy Garrigue", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Gris Charnel (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Rouge Smoking (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Black Afgano (Extrait de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Ingenious Ginger", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Assam of India", season: "Spring/Summer", occasion: "Casual Outdoor" }
+        ];
 
-  <script>
-    const fragrances = [
-      { name: "A Grove by the Sea", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Rouge Smoking (Extrait)", season: "Fall/Winter", occasion: "Going Out/Date" },
-      { name: "The One Luminous Night", season: "Fall/Winter", occasion: "Work" },
-      { name: "Poudrextase", season: "Spring/Summer", occasion: "Work" },
-      { name: "Apricot in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
-      { name: "Kasbah", season: "Fall/Winter", occasion: "Work" },
-      { name: "Casablanca", season: "Fall/Winter", occasion: "Going Out/Date" },
-      { name: "Quercus", season: "Spring/Summer", occasion: "Work" },
-      { name: "Eau de Magnolia", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Barcelona", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Crush Balls", season: "Spring/Summer", occasion: "Going Out/Date" },
-      { name: "Notturno", season: "Fall/Winter", occasion: "Work" },
-      { name: "Russian Tea", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "The Architects Club", season: "All Seasons", occasion: "Crowded Spaces" },
-      { name: "To My Father", season: "Fall/Winter", occasion: "Work" },
-      { name: "Sydney Rock Pool", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Bois d'Ascèse", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "Radio Bombay", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "Dark Wave", season: "Fall/Winter", occasion: "Crowded Spaces" },
-      { name: "Indigo Smoke", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "Poets of Berlin", season: "Spring/Summer", occasion: "Work" },
-      { name: "Morning Chess", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "Do Not Disturb", season: "All Seasons", occasion: "Crowded Spaces" },
-      { name: "Green Spell", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Nordic Noir", season: "All Seasons", occasion: "Crowded Spaces" },
-      { name: "Say Yes", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Collection Grands Crus - Azur Riviera", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Collection Grands Crus - Oud Al Sahraa", season: "Fall/Winter", occasion: "Going Out/Date" },
-      { name: "Collection Grands Crus - Hoja de Cuba", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "Collection Grands Crus - Russkaya Кожа", season: "Fall/Winter", occasion: "Work" },
-      { name: "Vetiverissimo", season: "Spring/Summer", occasion: "Work" },
-      { name: "Iris Cendré", season: "Spring/Summer", occasion: "Work" },
-      { name: "Cologne du Maghreb (2021)", season: "All Seasons", occasion: "Casual Outdoor" },
-      { name: "Unsettled", season: "All Seasons", occasion: "Crowded Spaces" },
-      { name: "Ummagumma", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "Silky Woods", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "Delphi (Huile Parfum)", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Cashmeran in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
-      { name: "Overnight (Eau de Parfum)", season: "All Seasons", occasion: "Work" },
-      { name: "Toji", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Pine in Acacia", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Ebony in Oak", season: "Fall/Winter", occasion: "Casual Outdoor" },
-      { name: "Bohemian Lime", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Sexy Garrigue", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Gris Charnel (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
-      { name: "Rouge Smoking (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
-      { name: "Black Afgano (Extrait de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
-      { name: "Ingenious Ginger", season: "Spring/Summer", occasion: "Casual Outdoor" },
-      { name: "Assam of India", season: "Spring/Summer", occasion: "Casual Outdoor" }
-    ];
-
-    document.getElementById("pickBtn").addEventListener("click", () => {
-      const season = document.getElementById("season").value;
-      const occasion = document.getElementById("occasion").value;
-      const result = document.getElementById("result");
-
-      const matches = fragrances.filter(f =>
-        (f.season === season || f.season === "All Seasons" || season === "All Seasons") &&
-        f.occasion === occasion
-      );
-
-      result.textContent = matches.length
-        ? `Today's Fragrance: ${matches[Math.floor(Math.random() * matches.length)].name}`
-        : "No match found. Try different criteria.";
-    });
-  </script>
+        function pickFragrance() {
+            const season = document.getElementById("season").value;
+            const occasion = document.getElementById("occasion").value;
+            const resultElement = document.getElementById("result");
+            
+            // Show loading animation
+            resultElement.innerHTML = '<span class="loading"></span> Selecting...';
+            
+            // Simulate a brief loading time
+            setTimeout(() => {
+                const filtered = fragrances.filter(f => 
+                    (f.season === season || f.season === "All Seasons" || season === "All Seasons") && 
+                    f.occasion === occasion
+                );
+                
+                if (filtered.length > 0) {
+                    const selection = filtered[Math.floor(Math.random() * filtered.length)].name;
+                    resultElement.innerHTML = `<div class="fade-in">Today's Fragrance:<br><strong style="font-size: 24px; display: block; margin-top: 10px; color: #222;">${selection}</strong></div>`;
+                } else {
+                    resultElement.innerHTML = '<div class="fade-in">No match found. Try different criteria!</div>';
+                }
+            }, 500);
+        }
+    </script>
 </body>
 </html>
