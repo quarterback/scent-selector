@@ -1,37 +1,109 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ron's Fragrance of the Day</title>
-    <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding: 20px; }
-        select, button { margin: 10px; padding: 10px; font-size: 16px; }
-        #result { margin-top: 20px; font-size: 20px; font-weight: bold; }
-    </style>
+    <!-- DaisyUI and Tailwind CSS via CDN -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/daisyui/4.5.0/full.min.css" rel="stylesheet" type="text/css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-<body>
-    <h1>Fragrance of the Day</h1>
-    <p>I needed an app to organize my fragrance collection, I spend too much time deciding what to wear, so I have this.</p>
-    <label for="season">Select Season:</label>
-    <select id="season">
-        <option value="Spring/Summer">Spring/Summer</option>
-        <option value="Fall/Winter">Fall/Winter</option>
-        <option value="All Seasons">All Seasons</option>
-    </select>
-
-    <label for="occasion">Select Occasion:</label>
-    <select id="occasion">
-        <option value="Work">Work</option>
-        <option value="Going Out/Date">Going Out/Date</option>
-        <option value="Crowded Spaces">Crowded Spaces</option>
-        <option value="Casual Outdoor">Casual Outdoor</option>
-    </select>
-
-    <button onclick="pickFragrance()">Pick Fragrance</button>
-    <div id="result"></div>
-
+<body class="min-h-screen bg-base-200">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Card container -->
+        <div class="card w-full max-w-md mx-auto bg-base-100 shadow-xl">
+            <!-- Header section -->
+            <div class="card-body">
+                <h1 class="card-title text-2xl md:text-3xl font-bold text-center text-primary mx-auto">
+                    Fragrance of the Day
+                </h1>
+                <p class="text-center text-base-content/70 italic mb-6">I needed a faster way to select what to wear...I overengineered a solution</p>
+                
+                <!-- Theme toggle button -->
+                <div class="absolute top-4 right-4">
+                    <label class="swap swap-rotate">
+                        <input type="checkbox" id="theme-toggle" />
+                        <div class="swap-on"><i class="fas fa-moon text-base-content"></i></div>
+                        <div class="swap-off"><i class="fas fa-sun text-base-content"></i></div>
+                    </label>
+                </div>
+                
+                <!-- Selector form -->
+                <div class="form-control w-full mb-4">
+                    <label class="label">
+                        <span class="label-text text-base-content font-medium">
+                            <i class="fas fa-calendar-alt mr-2"></i>Select Season
+                        </span>
+                    </label>
+                    <select id="season" class="select select-bordered w-full">
+                        <option value="Spring/Summer">Spring/Summer</option>
+                        <option value="Fall/Winter">Fall/Winter</option>
+                        <option value="All Seasons">All Seasons</option>
+                    </select>
+                </div>
+                
+                <div class="form-control w-full mb-6">
+                    <label class="label">
+                        <span class="label-text text-base-content font-medium">
+                            <i class="fas fa-user-tie mr-2"></i>Select Occasion
+                        </span>
+                    </label>
+                    <select id="occasion" class="select select-bordered w-full">
+                        <option value="Work">Work</option>
+                        <option value="Going Out/Date">Going Out/Date</option>
+                        <option value="Crowded Spaces">Crowded Spaces</option>
+                        <option value="Casual Outdoor">Casual Outdoor</option>
+                    </select>
+                </div>
+                
+                <button id="pickBtn" class="btn btn-primary btn-block">
+                    <i class="fas fa-spray-can mr-2"></i>Pick Fragrance
+                </button>
+                
+                <!-- Result section -->
+                <div class="mt-6 pt-6 border-t border-base-300">
+                    <div id="loading" class="flex justify-center items-center hidden">
+                        <span class="loading loading-dots loading-md text-primary"></span>
+                    </div>
+                    <div id="result-container" class="collapse">
+                        <div class="alert shadow-lg mb-4">
+                            <div class="flex flex-col w-full items-center text-center">
+                                <h3 class="font-bold text-xl">Today's Fragrance</h3>
+                                <div id="result" class="text-xl font-bold text-primary mt-2"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- History section -->
+                <div class="mt-2">
+                    <div class="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+                        <input type="checkbox" class="peer" /> 
+                        <div class="collapse-title text-base font-medium">
+                            Previous Selections
+                        </div>
+                        <div class="collapse-content"> 
+                            <div id="history-list" class="overflow-y-auto max-h-48">
+                                <!-- History items will be added here -->
+                            </div>
+                            <button id="clearHistoryBtn" class="btn btn-xs btn-ghost mt-3">Clear history</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <footer class="footer footer-center p-4 text-base-content/60 text-sm mt-8">
+            <div>
+                <p>Personal Fragrance Selector &copy; <span id="current-year"></span></p>
+            </div>
+        </footer>
+    </div>
+    
     <script>
+        // Fragrance database
         const fragrances = [
             { name: "A Grove by the Sea", season: "Spring/Summer", occasion: "Casual Outdoor" },
             { name: "Rouge Smoking (Extrait)", season: "Fall/Winter", occasion: "Going Out/Date" },
@@ -60,37 +132,142 @@
             { name: "Nordic Noir", season: "All Seasons", occasion: "Crowded Spaces" },
             { name: "Say Yes", season: "Spring/Summer", occasion: "Casual Outdoor" },
             { name: "Collection Grands Crus - Azur Riviera", season: "Spring/Summer", occasion: "Casual Outdoor" },
-{ name: "Collection Grands Crus - Oud Al Sahraa", season: "Fall/Winter", occasion: "Going Out/Date" },
-{ name: "Collection Grands Crus - Hoja de Cuba", season: "Fall/Winter", occasion: "Casual Outdoor" },
-{ name: "Collection Grands Crus - Russkaya Кожа", season: "Fall/Winter", occasion: "Work" },
-{ name: "Vetiverissimo", season: "Spring/Summer", occasion: "Work" },
-{ name: "Iris Cendré", season: "Spring/Summer", occasion: "Work" },
-{ name: "Cologne du Maghreb (2021)", season: "All Seasons", occasion: "Casual Outdoor" },
-{ name: "Unsettled", season: "All Seasons", occasion: "Crowded Spaces" },
-{ name: "Ummagumma", season: "Fall/Winter", occasion: "Casual Outdoor" },
-{ name: "Silky Woods", season: "Fall/Winter", occasion: "Casual Outdoor" },
-{ name: "Delphi (Huile Parfum)", season: "Spring/Summer", occasion: "Casual Outdoor" },
-{ name: "Cashmeran in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
-{ name: "Overnight (Eau de Parfum)", season: "All Seasons", occasion: "Work" },
-{ name: "Toji", season: "Spring/Summer", occasion: "Casual Outdoor" },
-{ name: "Pine in Acacia", season: "Spring/Summer", occasion: "Casual Outdoor" },
-{ name: "Ebony in Oak", season: "Fall/Winter", occasion: "Casual Outdoor" },
-{ name: "Bohemian Lime", season: "Spring/Summer", occasion: "Casual Outdoor" },
-{ name: "Sexy Garrigue", season: "Spring/Summer", occasion: "Casual Outdoor" },
-{ name: "Gris Charnel (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
-{ name: "Rouge Smoking (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
-{ name: "Black Afgano (Extrait de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Collection Grands Crus - Oud Al Sahraa", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Collection Grands Crus - Hoja de Cuba", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Collection Grands Crus - Russkaya Кожа", season: "Fall/Winter", occasion: "Work" },
+            { name: "Vetiverissimo", season: "Spring/Summer", occasion: "Work" },
+            { name: "Iris Cendré", season: "Spring/Summer", occasion: "Work" },
+            { name: "Cologne du Maghreb (2021)", season: "All Seasons", occasion: "Casual Outdoor" },
+            { name: "Unsettled", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Ummagumma", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Silky Woods", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Delphi (Huile Parfum)", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Cashmeran in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Overnight (Eau de Parfum)", season: "All Seasons", occasion: "Work" },
+            { name: "Toji", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Pine in Acacia", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Ebony in Oak", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Bohemian Lime", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Sexy Garrigue", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Gris Charnel (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Rouge Smoking (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Black Afgano (Extrait de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
             { name: "Ingenious Ginger", season: "Spring/Summer", occasion: "Casual Outdoor" },
             { name: "Assam of India", season: "Spring/Summer", occasion: "Casual Outdoor" }
         ];
 
-        function pickFragrance() {
-            const season = document.getElementById("season").value;
-            const occasion = document.getElementById("occasion").value;
-            const filtered = fragrances.filter(f => f.season.includes(season) && f.occasion === occasion);
-            const selection = filtered.length > 0 ? filtered[Math.floor(Math.random() * filtered.length)].name : "No exact match, choose freely!";
-            document.getElementById("result").innerText = "Today's Fragrance: " + selection;
+        // DOM elements
+        const pickBtn = document.getElementById('pickBtn');
+        const resultContainer = document.getElementById('result-container');
+        const resultElement = document.getElementById('result');
+        const loadingElement = document.getElementById('loading');
+        const historyListElement = document.getElementById('history-list');
+        const clearHistoryBtn = document.getElementById('clearHistoryBtn');
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // Set current year in footer
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+        
+        // Theme handling
+        themeToggle.addEventListener('change', function() {
+            if (this.checked) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                document.documentElement.setAttribute('data-theme', 'light');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+        
+        // Initialize theme from localStorage
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        themeToggle.checked = savedTheme === 'dark';
+        
+        // Load history
+        function loadHistory() {
+            const history = JSON.parse(localStorage.getItem('fragranceHistory')) || [];
+            historyListElement.innerHTML = '';
+            
+            if (history.length === 0) {
+                const emptyItem = document.createElement('div');
+                emptyItem.className = 'text-sm text-base-content/60 p-2';
+                emptyItem.textContent = 'No selections yet';
+                historyListElement.appendChild(emptyItem);
+                return;
+            }
+            
+            history.forEach((item, index) => {
+                const historyItem = document.createElement('div');
+                historyItem.className = 'p-3 border-b border-base-200 last:border-0';
+                historyItem.innerHTML = `
+                    <div class="flex flex-col">
+                        <span class="font-medium">${item.fragrance}</span>
+                        <span class="text-xs text-base-content/70">
+                            ${item.season} • ${item.occasion} • ${item.date}
+                        </span>
+                    </div>
+                `;
+                historyListElement.appendChild(historyItem);
+            });
         }
+        
+        // Clear history
+        clearHistoryBtn.addEventListener('click', function() {
+            localStorage.removeItem('fragranceHistory');
+            loadHistory();
+        });
+        
+        // Pick fragrance function
+        pickBtn.addEventListener('click', function() {
+            const season = document.getElementById('season').value;
+            const occasion = document.getElementById('occasion').value;
+            
+            // Show loading animation
+            resultContainer.classList.remove('collapse-open');
+            resultContainer.classList.add('collapse');
+            loadingElement.classList.remove('hidden');
+            
+            // Simulate loading time
+            setTimeout(() => {
+                const filtered = fragrances.filter(f => 
+                    (f.season === season || f.season === "All Seasons" || season === "All Seasons") && 
+                    f.occasion === occasion
+                );
+                
+                if (filtered.length > 0) {
+                    const selection = filtered[Math.floor(Math.random() * filtered.length)].name;
+                    resultElement.textContent = selection;
+                    
+                    // Save to history
+                    const history = JSON.parse(localStorage.getItem('fragranceHistory')) || [];
+                    history.unshift({
+                        fragrance: selection,
+                        season: season,
+                        occasion: occasion,
+                        date: new Date().toLocaleDateString()
+                    });
+                    
+                    // Keep only the last 10 selections
+                    if (history.length > 10) {
+                        history.pop();
+                    }
+                    
+                    localStorage.setItem('fragranceHistory', JSON.stringify(history));
+                    loadHistory();
+                } else {
+                    resultElement.textContent = "No match found. Try different criteria!";
+                }
+                
+                // Hide loading, show result
+                loadingElement.classList.add('hidden');
+                resultContainer.classList.remove('collapse');
+                resultContainer.classList.add('collapse-open');
+            }, 600);
+        });
+        
+        // Initialize the app
+        loadHistory();
     </script>
 </body>
 </html>
