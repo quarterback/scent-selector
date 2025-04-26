@@ -7,48 +7,57 @@
   <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.3.5/dist/tailwind.min.css" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.5.0/dist/full.css" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    html, body {
+      font-family: system-ui, sans-serif;
+    }
+  </style>
 </head>
 <body class="bg-base-200 text-base-content">
   <main class="min-h-screen flex items-center justify-center px-4 py-12">
-    <div class="w-full max-w-xl bg-base-100 rounded-lg shadow-lg p-8 space-y-6">
+    <div class="w-full max-w-2xl bg-base-100 rounded-md shadow-lg p-8 space-y-4">
       <div class="text-center">
-        <h1 class="text-3xl font-bold text-primary mb-2">Ron's Fragrance of the Day</h1>
+        <h1 class="text-3xl font-bold text-primary mb-1">Ron's Fragrance of the Day</h1>
         <p class="text-sm text-base-content/70">Overengineering a solution to a decision fatigue problem</p>
       </div>
 
-      <div class="form-control">
-        <label class="label" for="season">
-          <span class="label-text font-medium"><i class="fas fa-calendar-alt mr-2"></i>Season</span>
-        </label>
-        <select id="season" class="select select-bordered">
-          <option value="Spring/Summer">Spring/Summer</option>
-          <option value="Fall/Winter">Fall/Winter</option>
-          <option value="All Seasons">All Seasons</option>
-        </select>
+      <div class="grid gap-4 md:grid-cols-2">
+        <div class="form-control">
+          <label class="label" for="season">
+            <span class="label-text font-medium">Season</span>
+          </label>
+          <select id="season" class="select select-bordered">
+            <option value="Spring/Summer">Spring/Summer</option>
+            <option value="Fall/Winter">Fall/Winter</option>
+            <option value="All Seasons">All Seasons</option>
+          </select>
+        </div>
+
+        <div class="form-control">
+          <label class="label" for="occasion">
+            <span class="label-text font-medium">Occasion</span>
+          </label>
+          <select id="occasion" class="select select-bordered">
+            <option value="Work">Work</option>
+            <option value="Going Out/Date">Going Out/Date</option>
+            <option value="Crowded Spaces">Crowded Spaces</option>
+            <option value="Casual Outdoor">Casual Outdoor</option>
+          </select>
+        </div>
       </div>
 
-      <div class="form-control">
-        <label class="label" for="occasion">
-          <span class="label-text font-medium"><i class="fas fa-user-tie mr-2"></i>Occasion</span>
-        </label>
-        <select id="occasion" class="select select-bordered">
-          <option value="Work">Work</option>
-          <option value="Going Out/Date">Going Out/Date</option>
-          <option value="Crowded Spaces">Crowded Spaces</option>
-          <option value="Casual Outdoor">Casual Outdoor</option>
-        </select>
+      <div class="pt-2">
+        <button id="pickBtn" class="btn w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold">
+          <i class="fas fa-spray-can mr-2"></i>Pick Fragrance
+        </button>
       </div>
 
-      <button id="pickBtn" class="btn btn-primary w-full">
-        <i class="fas fa-spray-can mr-2"></i>Pick Fragrance
-      </button>
+      <div id="result" class="text-center text-lg font-semibold text-primary pt-4 min-h-[32px]"></div>
 
-      <div id="result" class="text-center text-xl font-semibold text-primary pt-4 min-h-[40px]"></div>
-
-      <p class="text-center text-sm text-base-content/60 pt-6">
-        Built by Ron. 
-        <a href="https://github.com/YOUR_REPO_LINK_HERE" target="_blank" class="link link-hover text-primary font-medium ml-1">View on GitHub</a>
-      </p>
+      <div class="text-center text-sm text-base-content/60 pt-6">
+        Built by Ron.
+        <a href="https://github.com/YOUR_REPO_LINK" target="_blank" class="link link-hover text-primary font-medium ml-1">View on GitHub</a>
+      </div>
     </div>
   </main>
 
@@ -115,12 +124,9 @@
         f.occasion === occasion
       );
 
-      if (matches.length > 0) {
-        const pick = matches[Math.floor(Math.random() * matches.length)].name;
-        result.textContent = `Today's Fragrance: ${pick}`;
-      } else {
-        result.textContent = "No match found. Try different criteria.";
-      }
+      result.textContent = matches.length
+        ? `Today's Fragrance: ${matches[Math.floor(Math.random() * matches.length)].name}`
+        : "No match found. Try different criteria.";
     });
   </script>
 </body>
