@@ -4,255 +4,162 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ron's Fragrance Selector</title>
-    <style>
-        body { 
-            font-family: "Comic Sans MS", "Comic Sans", cursive;
-            background-color: #001a00; /* very dark green */
-            background-image: url("data:image/gif;base64,R0lGODlhZABkALMAAAAAAP///+/v7+bm5tjY2MbGxrW1ta2trZycnJSUlIyMjISEhHNzc2tra2NjYwAAACH5BAAAAAAALAAAAABkAGQAAAT/EMhJq7046827/2AojmRpnmiqrmzrvnAsz3Rt33iu73zv/8CgcEgsGo/IpHLJbDqf0Kh0Sq1ar9isdsvter/gsHhMLpvP6LR6zW673/C4fE6v2+/4vH7P7/v/gIGCg4SFhoeIiYqLjI2Oj5CRkpOUlZaXmJmam5ydnp+goaKjpKWmp6ipqqusra6vsLGys7S1tre4ubq7vL2+v8DBwsPExcbHyMnKy8zNzs/Q0dLT1NXW19jZ2tvc3d7f4OHi4+Tl5ufo6err7O3u7/Dx8vP09fb3+Pn6+/z9/v8AAwocSLCgwYMIEypcyLChw4cQI0qcSLGixYsYM2rcyLGjx48gPUMCADs=");
-            color: yellow;
-            text-align: center; 
-            padding: 20px;
-            margin: 0;
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'comic': ['"Comic Sans MS"', '"Comic Sans"', 'cursive'],
+                        'mono': ['"Courier New"', 'monospace']
+                    },
+                    colors: {
+                        'retro-green': '#001a00',
+                        'retro-lime': '#00FF00',
+                        'retro-cyan': '#00FFFF',
+                        'retro-magenta': '#FF00FF',
+                        'retro-yellow': '#FFFF00',
+                        'retro-red': '#FF0000',
+                        'retro-blue': '#000080'
+                    },
+                    animation: {
+                        'blink': 'blink 1s step-end infinite',
+                        'twinkle': 'twinkle 1s infinite',
+                        'flicker': 'flicker 0.5s infinite alternate',
+                        'rainbow': 'rainbow 2s linear infinite'
+                    }
+                }
+            }
         }
-        
-        marquee {
-            margin: 20px 0;
-        }
-        
-        h1 {
-            font-size: 36px;
-            color: #FF00FF; /* Magenta */
-            text-shadow: 2px 2px #00FFFF; /* Cyan shadow */
-            animation: blink 1s step-end infinite;
-        }
-        
-        @keyframes blink {
-            50% { opacity: 0; }
-        }
-        
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            background-color: #000000;
-            border: 5px ridge #FF00FF;
-            padding: 20px;
-            box-shadow: 10px 10px 0 #00FFFF;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-            text-align: left;
-        }
-        
-        label {
-            display: block;
-            font-weight: bold;
-            color: #00FF00; /* Lime */
-            margin-bottom: 5px;
-            font-size: 18px;
-        }
-        
-        select { 
-            width: 100%;
-            padding: 8px;
-            font-family: "Courier New", monospace;
-            font-size: 16px;
-            background-color: #000080;
-            color: white;
-            border: 3px inset #c0c0c0;
-        }
-        
-        button { 
-            background: linear-gradient(to bottom, #FF0000, #FF00FF);
-            color: white;
-            border: 3px outset #c0c0c0;
-            padding: 10px 20px;
-            font-family: "Comic Sans MS", "Comic Sans", cursive;
-            font-size: 18px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 20px;
-        }
-        
-        button:hover {
-            background: linear-gradient(to bottom, #FF00FF, #FF0000);
-        }
-        
-        button:active {
-            border-style: inset;
-        }
-        
-        #result { 
-            margin-top: 30px;
-            min-height: 80px;
-            background-color: black;
-            color: #00FF00; /* Lime text */
-            padding: 15px;
-            border: 3px inset #c0c0c0;
-            font-family: "Courier New", monospace;
-            font-size: 18px;
-            line-height: 1.5;
-        }
-        
-        .construction {
-            margin: 20px auto;
-            text-align: center;
-        }
-        
-        .visitor-counter {
-            margin-top: 30px;
-            font-family: "Courier New", monospace;
-            color: white;
-            background-color: black;
-            display: inline-block;
-            padding: 5px 15px;
-            border: 1px solid #c0c0c0;
-        }
-        
-        .webring {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-        
-        .webring a {
-            color: #00FFFF;
-            text-decoration: none;
-            font-weight: bold;
-        }
-        
-        .webring a:hover {
-            color: #FF00FF;
-            text-decoration: underline;
-        }
-        
-        .divider {
-            margin: 20px 0;
-            height: 10px;
-            background: repeating-linear-gradient(
-                45deg,
-                #FF0000,
-                #FF0000 10px,
-                #FFFF00 10px,
-                #FFFF00 20px
-            );
-        }
-        
-        /* Stars animation */
-        .stars {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            pointer-events: none;
-        }
-        
-        .star {
-            position: absolute;
-            width: 3px;
-            height: 3px;
-            background-color: white;
-            border-radius: 50%;
-            animation: twinkle 1s infinite;
-        }
-        
-        @keyframes twinkle {
-            0%, 100% { opacity: 0.2; }
-            50% { opacity: 1; }
-        }
-        
-        /* Flame border animation */
-        @keyframes flicker {
-            0%, 100% { opacity: 0.8; transform: scaleY(1); }
-            50% { opacity: 1; transform: scaleY(1.1); }
-        }
-        
-        .flame {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            height: 30px;
-            background: linear-gradient(to top, #FF0000, #FFFF00);
-            clip-path: polygon(
-                0% 100%, 5% 80%, 10% 100%, 15% 70%, 20% 100%, 25% 85%, 30% 100%,
-                35% 80%, 40% 100%, 45% 75%, 50% 100%, 55% 80%, 60% 100%, 65% 75%,
-                70% 100%, 75% 85%, 80% 100%, 85% 70%, 90% 100%, 95% 80%, 100% 100%
-            );
-            animation: flicker 0.5s infinite alternate;
-        }
-        
-        .flame-container {
-            position: relative;
-            margin-top: 30px;
-            height: 30px;
-        }
-    </style>
+    </script>
 </head>
-<body>
+<body class="bg-retro-green font-comic text-retro-yellow min-h-screen relative overflow-x-hidden">
     <!-- Stars background -->
-    <div class="stars" id="stars"></div>
+    <div class="fixed inset-0 pointer-events-none z-0" id="stars"></div>
     
-    <marquee behavior="alternate" scrollamount="5">
-        <font color="#FF0000">W</font><font color="#FF7F00">e</font><font color="#FFFF00">l</font><font color="#00FF00">c</font><font color="#0000FF">o</font><font color="#4B0082">m</font><font color="#9400D3">e</font>
-        <font color="#FF0000">t</font><font color="#FF7F00">o</font>
-        <font color="#FFFF00">R</font><font color="#00FF00">o</font><font color="#0000FF">n</font><font color="#4B0082">'</font><font color="#9400D3">s</font>
-        <font color="#FF0000">F</font><font color="#FF7F00">r</font><font color="#FFFF00">a</font><font color="#00FF00">g</font><font color="#0000FF">r</font><font color="#4B0082">a</font><font color="#9400D3">n</font><font color="#FF0000">c</font><font color="#FF7F00">e</font>
-        <font color="#FFFF00">P</font><font color="#00FF00">a</font><font color="#0000FF">g</font><font color="#4B0082">e</font><font color="#9400D3">!</font>
-    </marquee>
-    
-    <div class="container">
-        <h1>RON'S FRAGRANCE SELECTOR</h1>
-        
-        <div class="construction">
-            <img src="data:image/gif;base64,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" alt="Under Construction">
+    <!-- Main container -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+        <!-- Header marquee -->
+        <div class="py-4">
+            <div class="animate-pulse text-center">
+                <span class="text-2xl md:text-3xl font-bold">
+                    <span class="text-retro-red">W</span><span class="text-orange-500">e</span><span class="text-retro-yellow">l</span><span class="text-retro-lime">c</span><span class="text-blue-500">o</span><span class="text-indigo-600">m</span><span class="text-purple-600">e</span>
+                    <span class="text-retro-red">t</span><span class="text-orange-500">o</span>
+                    <span class="text-retro-yellow">R</span><span class="text-retro-lime">o</span><span class="text-blue-500">n</span><span class="text-indigo-600">'</span><span class="text-purple-600">s</span>
+                    <span class="text-retro-red">F</span><span class="text-orange-500">r</span><span class="text-retro-yellow">a</span><span class="text-retro-lime">g</span><span class="text-blue-500">r</span><span class="text-indigo-600">a</span><span class="text-purple-600">n</span><span class="text-retro-red">c</span><span class="text-orange-500">e</span>
+                    <span class="text-retro-yellow">P</span><span class="text-retro-lime">a</span><span class="text-blue-500">g</span><span class="text-indigo-600">e</span><span class="text-purple-600">!</span>
+                </span>
+            </div>
         </div>
         
-        <div class="form-group">
-            <label for="season">★★★ SELECT SEASON: ★★★</label>
-            <select id="season">
-                <option value="Spring/Summer">Spring/Summer</option>
-                <option value="Fall/Winter">Fall/Winter</option>
-                <option value="All Seasons">All Seasons</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="occasion">★★★ SELECT OCCASION: ★★★</label>
-            <select id="occasion">
-                <option value="Work">Work</option>
-                <option value="Going Out/Date">Going Out/Date</option>
-                <option value="Crowded Spaces">Crowded Spaces</option>
-                <option value="Casual Outdoor">Casual Outdoor</option>
-            </select>
-        </div>
-
-        <button onclick="pickFragrance()">CLICK HERE!!!</button>
-        
-        <div id="result"></div>
-        
-        <div class="divider"></div>
-        
-        <div class="flame-container">
-            <div class="flame"></div>
+        <!-- Main content -->
+        <div class="flex-1 flex items-center justify-center p-4">
+            <div class="w-full max-w-2xl">
+                <!-- Main card -->
+                <div class="bg-black border-4 border-retro-magenta rounded-lg shadow-2xl shadow-retro-cyan/50 p-6 md:p-8 relative overflow-hidden">
+                    <!-- Animated border effect -->
+                    <div class="absolute inset-0 border-4 border-retro-cyan opacity-20 animate-pulse rounded-lg"></div>
+                    
+                    <!-- Title -->
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-retro-magenta text-center mb-8 animate-blink drop-shadow-lg">
+                        RON'S FRAGRANCE SELECTOR
+                    </h1>
+                    
+                    <!-- Under construction GIF placeholder -->
+                    <div class="text-center mb-8">
+                        <div class="inline-block bg-retro-yellow text-black px-4 py-2 rounded font-bold animate-pulse">
+                            🚧 UNDER CONSTRUCTION 🚧
+                        </div>
+                    </div>
+                    
+                    <!-- Form -->
+                    <div class="space-y-6">
+                        <!-- Season selector -->
+                        <div class="space-y-3">
+                            <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
+                                ★★★ SELECT SEASON: ★★★
+                            </label>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <button onclick="selectSeason('Spring/Summer')" id="season-spring" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Spring/Summer
+                                </button>
+                                <button onclick="selectSeason('Fall/Winter')" id="season-fall" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Fall/Winter
+                                </button>
+                                <button onclick="selectSeason('All Seasons')" id="season-all" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    All Seasons
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Occasion selector -->
+                        <div class="space-y-3">
+                            <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
+                                ★★★ SELECT OCCASION: ★★★
+                            </label>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                <button onclick="selectOccasion('Work')" id="occasion-work" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Work
+                                </button>
+                                <button onclick="selectOccasion('Going Out/Date')" id="occasion-date" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Going Out/Date
+                                </button>
+                                <button onclick="selectOccasion('Crowded Spaces')" id="occasion-crowd" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Crowded Spaces
+                                </button>
+                                <button onclick="selectOccasion('Casual Outdoor')" id="occasion-outdoor" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Casual Outdoor
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Submit button -->
+                        <div class="text-center pt-4">
+                            <button onclick="pickFragrance()" class="bg-gradient-to-b from-retro-red to-retro-magenta text-white font-bold text-lg md:text-xl px-8 py-3 rounded-lg border-2 border-gray-400 hover:from-retro-magenta hover:to-retro-red active:border-inset transform hover:scale-105 transition-all duration-200 shadow-lg">
+                                CLICK HERE!!!
+                            </button>
+                        </div>
+                        
+                        <!-- Result display -->
+                        <div id="result" class="min-h-[100px] bg-black border-2 border-gray-400 rounded p-4 font-mono text-retro-lime text-base md:text-lg leading-relaxed text-center flex items-center justify-center">
+                            <!-- Results will appear here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div class="my-8 h-3 bg-gradient-to-r from-retro-red via-retro-yellow to-retro-red rounded animate-pulse"></div>
+                    
+                    <!-- Flame effect -->
+                    <div class="flame-container relative h-8 mt-6">
+                        <div class="flame absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-retro-red to-retro-yellow rounded-t-full animate-flicker"></div>
+                    </div>
+                </div>
+                
+                <!-- Footer elements -->
+                <div class="text-center mt-8 space-y-4">
+                    <!-- Visitor counter -->
+                    <div class="inline-block bg-black text-white border border-gray-400 px-4 py-2 font-mono">
+                        You are visitor #: 00001337
+                    </div>
+                    
+                    <!-- Web ring -->
+                    <div class="flex justify-center items-center space-x-4 text-retro-cyan">
+                        <a href="#" class="hover:text-retro-magenta hover:underline font-bold transition-colors">◄ PREV</a>
+                        <span class="text-white">|</span>
+                        <a href="#" class="hover:text-retro-magenta hover:underline font-bold transition-colors">HOME</a>
+                        <span class="text-white">|</span>
+                        <a href="#" class="hover:text-retro-magenta hover:underline font-bold transition-colors">NEXT ►</a>
+                    </div>
+                    
+                    <!-- Bottom marquee -->
+                    <div class="text-retro-cyan text-sm animate-pulse">
+                        This page best viewed in Netscape Navigator 4.0 at 800x600 resolution!
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-    
-    <div class="visitor-counter">
-        You are visitor #: 00001337
-    </div>
-    
-    <div class="webring">
-        <a href="#">◄ PREV</a> | <a href="#">HOME</a> | <a href="#">NEXT ►</a>
-    </div>
-    
-    <marquee direction="up" scrollamount="2" style="height: 50px; margin-top: 20px; color: cyan;">
-        This page best viewed in Netscape Navigator 4.0 at 800x600 resolution!
-    </marquee>
     
     <script>
         // Create stars
@@ -262,7 +169,7 @@
             
             for (let i = 0; i < starsCount; i++) {
                 const star = document.createElement('div');
-                star.className = 'star';
+                star.className = 'absolute w-1 h-1 bg-white rounded-full animate-twinkle';
                 star.style.top = Math.random() * 100 + '%';
                 star.style.left = Math.random() * 100 + '%';
                 star.style.animationDelay = Math.random() * 2 + 's';
@@ -271,7 +178,59 @@
         }
         
         // Create stars on page load
-        window.onload = createStars;
+        window.addEventListener('load', createStars);
+        
+        // Selection state
+        let selectedSeason = 'Spring/Summer';
+        let selectedOccasion = 'Work';
+        
+        // Initialize with defaults
+        document.addEventListener('DOMContentLoaded', function() {
+            selectSeason('Spring/Summer');
+            selectOccasion('Work');
+        });
+        
+        function selectSeason(season) {
+            selectedSeason = season;
+            
+            // Reset all season buttons
+            document.querySelectorAll('.season-btn').forEach(btn => {
+                btn.classList.remove('bg-retro-cyan', 'text-black', 'border-retro-magenta');
+                btn.classList.add('bg-retro-blue', 'text-white', 'border-gray-400');
+            });
+            
+            // Highlight selected button
+            const selectedBtn = document.getElementById(`season-${season.toLowerCase().replace(/[^a-z]/g, '')}`);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('bg-retro-blue', 'text-white', 'border-gray-400');
+                selectedBtn.classList.add('bg-retro-cyan', 'text-black', 'border-retro-magenta');
+            }
+        }
+        
+        function selectOccasion(occasion) {
+            selectedOccasion = occasion;
+            
+            // Reset all occasion buttons
+            document.querySelectorAll('.occasion-btn').forEach(btn => {
+                btn.classList.remove('bg-retro-cyan', 'text-black', 'border-retro-magenta');
+                btn.classList.add('bg-retro-blue', 'text-white', 'border-gray-400');
+            });
+            
+            // Highlight selected button
+            let btnId = '';
+            switch(occasion) {
+                case 'Work': btnId = 'occasion-work'; break;
+                case 'Going Out/Date': btnId = 'occasion-date'; break;
+                case 'Crowded Spaces': btnId = 'occasion-crowd'; break;
+                case 'Casual Outdoor': btnId = 'occasion-outdoor'; break;
+            }
+            
+            const selectedBtn = document.getElementById(btnId);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('bg-retro-blue', 'text-white', 'border-gray-400');
+                selectedBtn.classList.add('bg-retro-cyan', 'text-black', 'border-retro-magenta');
+            }
+        }
         
         // Fragrance selection logic
         const fragrances = [
@@ -327,18 +286,21 @@
             { name: "Gozo", season: "Spring/Summer", occasion: "Going Out/Date" },
             { name: "Plum in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
             { name: "Vetiveria", season: "All Seasons", occasion: "Work" },
-            { name: "Silver Saffron", season: "Fall/Winter", occasion: "Crowded Spaces" }
+            { name: "Silver Saffron", season: "Fall/Winter", occasion: "Crowded Spaces" },
+            { name: "Wedding in Oaxaca", season: "Spring/Summer", occasion: "Going Out/Date" },
+            { name: "Pacific Rock Flower", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Pacific Rock Moss", season: "Spring/Summer", occasion: "Casual Outdoor" }
         ];
 
         function pickFragrance() {
-            const season = document.getElementById("season").value;
-            const occasion = document.getElementById("occasion").value;
+            const season = selectedSeason;
+            const occasion = selectedOccasion;
             const resultElement = document.getElementById("result");
             
-            // Simulate loading with dots
-            resultElement.innerHTML = "What will the smell be today?";
+            // Show loading message
+            resultElement.innerHTML = '<div class="animate-pulse">What will the smell be today?</div>';
             
-            // Simulated loading time for authentic 90s dial-up feeling
+            // Simulate loading time for authentic retro feeling
             setTimeout(() => {
                 const filtered = fragrances.filter(f => 
                     (f.season === season || f.season === "All Seasons" || season === "All Seasons") && 
@@ -348,13 +310,15 @@
                 if (filtered.length > 0) {
                     const selection = filtered[Math.floor(Math.random() * filtered.length)].name;
                     resultElement.innerHTML = `
-                        <blink>*********************</blink><br>
-                        TODAY'S FRAGRANCE:<br>
-                        <font color="#FFFF00" size="+1">${selection}</font><br>
-                        <blink>*********************</blink>
+                        <div class="animate-pulse">
+                            <div class="text-retro-yellow mb-2">*********************</div>
+                            <div class="text-white mb-1">TODAY'S FRAGRANCE:</div>
+                            <div class="text-retro-yellow text-xl font-bold mb-2">${selection}</div>
+                            <div class="text-retro-yellow">*********************</div>
+                        </div>
                     `;
                 } else {
-                    resultElement.innerHTML = "NO MATCH FOUND! TRY DIFFERENT CRITERIA!";
+                    resultElement.innerHTML = '<div class="text-retro-red animate-pulse">NO MATCH FOUND! TRY DIFFERENT CRITERIA!</div>';
                 }
             }, 1500);
         }
