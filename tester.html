@@ -80,7 +80,7 @@
                             <label for="season" class="block text-retro-lime font-bold text-lg md:text-xl">
                                 ★★★ SELECT SEASON: ★★★
                             </label>
-                            <select id="season" class="w-full p-3 bg-retro-blue text-white border-2 border-gray-400 rounded font-mono text-base md:text-lg focus:border-retro-cyan focus:outline-none transition-colors">
+                            <select id="season" class="w-full p-3 bg-retro-blue text-white border-2 border-gray-400 rounded font-mono text-base md:text-lg focus:border-retro-cyan focus:outline-none transition-colors cursor-pointer hover:bg-blue-700">
                                 <option value="Spring/Summer">Spring/Summer</option>
                                 <option value="Fall/Winter">Fall/Winter</option>
                                 <option value="All Seasons">All Seasons</option>
@@ -92,7 +92,7 @@
                             <label for="occasion" class="block text-retro-lime font-bold text-lg md:text-xl">
                                 ★★★ SELECT OCCASION: ★★★
                             </label>
-                            <select id="occasion" class="w-full p-3 bg-retro-blue text-white border-2 border-gray-400 rounded font-mono text-base md:text-lg focus:border-retro-cyan focus:outline-none transition-colors">
+                            <select id="occasion" class="w-full p-3 bg-retro-blue text-white border-2 border-gray-400 rounded font-mono text-base md:text-lg focus:border-retro-cyan focus:outline-none transition-colors cursor-pointer hover:bg-blue-700">
                                 <option value="Work">Work</option>
                                 <option value="Going Out/Date">Going Out/Date</option>
                                 <option value="Crowded Spaces">Crowded Spaces</option>
@@ -166,6 +166,36 @@
         // Create stars on page load
         window.addEventListener('load', createStars);
         
+        // Ensure dropdowns are interactive
+        document.addEventListener('DOMContentLoaded', function() {
+            const seasonSelect = document.getElementById('season');
+            const occasionSelect = document.getElementById('occasion');
+            
+            // Add click handlers to ensure dropdowns work
+            seasonSelect.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            occasionSelect.addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // Add change event listeners for visual feedback
+            seasonSelect.addEventListener('change', function() {
+                this.style.backgroundColor = '#1e40af';
+                setTimeout(() => {
+                    this.style.backgroundColor = '#000080';
+                }, 200);
+            });
+            
+            occasionSelect.addEventListener('change', function() {
+                this.style.backgroundColor = '#1e40af';
+                setTimeout(() => {
+                    this.style.backgroundColor = '#000080';
+                }, 200);
+            });
+        });
+        
         // Fragrance selection logic
         const fragrances = [
             { name: "A Grove by the Sea", season: "Spring/Summer", occasion: "Casual Outdoor" },
@@ -233,13 +263,10 @@
             
             // Simulate loading time for authentic retro feeling
             setTimeout(() => {
-                const filtered = fragrances.filter(f => {
-                    const seasonMatch = f.season === season || f.season === "All Seasons" || season === "All Seasons";
-                    const occasionMatch = f.occasion === occasion;
-                    return seasonMatch && occasionMatch;
-                });
-                
-                console.log(`Found ${filtered.length} matches for ${season} + ${occasion}`);
+                const filtered = fragrances.filter(f => 
+                    (f.season === season || f.season === "All Seasons" || season === "All Seasons") && 
+                    f.occasion === occasion
+                );
                 
                 if (filtered.length > 0) {
                     const selection = filtered[Math.floor(Math.random() * filtered.length)].name;
