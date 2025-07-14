@@ -233,10 +233,13 @@
             
             // Simulate loading time for authentic retro feeling
             setTimeout(() => {
-                const filtered = fragrances.filter(f => 
-                    (f.season === season || f.season === "All Seasons" || season === "All Seasons") && 
-                    f.occasion === occasion
-                );
+                const filtered = fragrances.filter(f => {
+                    const seasonMatch = f.season === season || f.season === "All Seasons" || season === "All Seasons";
+                    const occasionMatch = f.occasion === occasion;
+                    return seasonMatch && occasionMatch;
+                });
+                
+                console.log(`Found ${filtered.length} matches for ${season} + ${occasion}`);
                 
                 if (filtered.length > 0) {
                     const selection = filtered[Math.floor(Math.random() * filtered.length)].name;
