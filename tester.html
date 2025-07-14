@@ -76,28 +76,42 @@
                     <!-- Form -->
                     <div class="space-y-6">
                         <!-- Season selector -->
-                        <div class="space-y-2">
-                            <label for="season" class="block text-retro-lime font-bold text-lg md:text-xl">
+                        <div class="space-y-3">
+                            <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
                                 ★★★ SELECT SEASON: ★★★
                             </label>
-                            <select id="season" class="w-full p-3 bg-retro-blue text-white border-2 border-gray-400 rounded font-mono text-base md:text-lg focus:border-retro-cyan focus:outline-none transition-colors cursor-pointer hover:bg-blue-700">
-                                <option value="Spring/Summer">Spring/Summer</option>
-                                <option value="Fall/Winter">Fall/Winter</option>
-                                <option value="All Seasons">All Seasons</option>
-                            </select>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
+                                <button onclick="selectSeason('Spring/Summer')" id="season-spring" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Spring/Summer
+                                </button>
+                                <button onclick="selectSeason('Fall/Winter')" id="season-fall" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Fall/Winter
+                                </button>
+                                <button onclick="selectSeason('All Seasons')" id="season-all" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    All Seasons
+                                </button>
+                            </div>
                         </div>
                         
                         <!-- Occasion selector -->
-                        <div class="space-y-2">
-                            <label for="occasion" class="block text-retro-lime font-bold text-lg md:text-xl">
+                        <div class="space-y-3">
+                            <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
                                 ★★★ SELECT OCCASION: ★★★
                             </label>
-                            <select id="occasion" class="w-full p-3 bg-retro-blue text-white border-2 border-gray-400 rounded font-mono text-base md:text-lg focus:border-retro-cyan focus:outline-none transition-colors cursor-pointer hover:bg-blue-700">
-                                <option value="Work">Work</option>
-                                <option value="Going Out/Date">Going Out/Date</option>
-                                <option value="Crowded Spaces">Crowded Spaces</option>
-                                <option value="Casual Outdoor">Casual Outdoor</option>
-                            </select>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                <button onclick="selectOccasion('Work')" id="occasion-work" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Work
+                                </button>
+                                <button onclick="selectOccasion('Going Out/Date')" id="occasion-date" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Going Out/Date
+                                </button>
+                                <button onclick="selectOccasion('Crowded Spaces')" id="occasion-crowd" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Crowded Spaces
+                                </button>
+                                <button onclick="selectOccasion('Casual Outdoor')" id="occasion-outdoor" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Casual Outdoor
+                                </button>
+                            </div>
                         </div>
                         
                         <!-- Submit button -->
@@ -166,35 +180,57 @@
         // Create stars on page load
         window.addEventListener('load', createStars);
         
-        // Ensure dropdowns are interactive
+        // Selection state
+        let selectedSeason = 'Spring/Summer';
+        let selectedOccasion = 'Work';
+        
+        // Initialize with defaults
         document.addEventListener('DOMContentLoaded', function() {
-            const seasonSelect = document.getElementById('season');
-            const occasionSelect = document.getElementById('occasion');
-            
-            // Add click handlers to ensure dropdowns work
-            seasonSelect.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-            
-            occasionSelect.addEventListener('click', function(e) {
-                e.stopPropagation();
-            });
-            
-            // Add change event listeners for visual feedback
-            seasonSelect.addEventListener('change', function() {
-                this.style.backgroundColor = '#1e40af';
-                setTimeout(() => {
-                    this.style.backgroundColor = '#000080';
-                }, 200);
-            });
-            
-            occasionSelect.addEventListener('change', function() {
-                this.style.backgroundColor = '#1e40af';
-                setTimeout(() => {
-                    this.style.backgroundColor = '#000080';
-                }, 200);
-            });
+            selectSeason('Spring/Summer');
+            selectOccasion('Work');
         });
+        
+        function selectSeason(season) {
+            selectedSeason = season;
+            
+            // Reset all season buttons
+            document.querySelectorAll('.season-btn').forEach(btn => {
+                btn.classList.remove('bg-retro-cyan', 'text-black', 'border-retro-magenta');
+                btn.classList.add('bg-retro-blue', 'text-white', 'border-gray-400');
+            });
+            
+            // Highlight selected button
+            const selectedBtn = document.getElementById(`season-${season.toLowerCase().replace(/[^a-z]/g, '')}`);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('bg-retro-blue', 'text-white', 'border-gray-400');
+                selectedBtn.classList.add('bg-retro-cyan', 'text-black', 'border-retro-magenta');
+            }
+        }
+        
+        function selectOccasion(occasion) {
+            selectedOccasion = occasion;
+            
+            // Reset all occasion buttons
+            document.querySelectorAll('.occasion-btn').forEach(btn => {
+                btn.classList.remove('bg-retro-cyan', 'text-black', 'border-retro-magenta');
+                btn.classList.add('bg-retro-blue', 'text-white', 'border-gray-400');
+            });
+            
+            // Highlight selected button
+            let btnId = '';
+            switch(occasion) {
+                case 'Work': btnId = 'occasion-work'; break;
+                case 'Going Out/Date': btnId = 'occasion-date'; break;
+                case 'Crowded Spaces': btnId = 'occasion-crowd'; break;
+                case 'Casual Outdoor': btnId = 'occasion-outdoor'; break;
+            }
+            
+            const selectedBtn = document.getElementById(btnId);
+            if (selectedBtn) {
+                selectedBtn.classList.remove('bg-retro-blue', 'text-white', 'border-gray-400');
+                selectedBtn.classList.add('bg-retro-cyan', 'text-black', 'border-retro-magenta');
+            }
+        }
         
         // Fragrance selection logic
         const fragrances = [
@@ -257,8 +293,8 @@
         ];
 
         function pickFragrance() {
-            const season = document.getElementById("season").value;
-            const occasion = document.getElementById("occasion").value;
+            const season = selectedSeason;
+            const occasion = selectedOccasion;
             const resultElement = document.getElementById("result");
             
             // Show loading message
