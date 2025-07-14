@@ -1,0 +1,169 @@
+/* Custom animations for retro effects */
+@keyframes blink {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0; }
+}
+
+@keyframes twinkle {
+    0%, 100% { opacity: 0.2; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes flicker {
+    0%, 100% { 
+        opacity: 0.8; 
+        transform: scaleY(1) scaleX(1);
+        filter: hue-rotate(0deg);
+    }
+    25% { 
+        opacity: 1; 
+        transform: scaleY(1.1) scaleX(0.95);
+        filter: hue-rotate(10deg);
+    }
+    50% { 
+        opacity: 0.9; 
+        transform: scaleY(0.9) scaleX(1.05);
+        filter: hue-rotate(-10deg);
+    }
+    75% { 
+        opacity: 1; 
+        transform: scaleY(1.05) scaleX(0.98);
+        filter: hue-rotate(5deg);
+    }
+}
+
+@keyframes rainbow {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+}
+
+@keyframes glow {
+    0%, 100% { 
+        text-shadow: 0 0 5px currentColor, 0 0 10px currentColor;
+    }
+    50% { 
+        text-shadow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 30px currentColor;
+    }
+}
+
+/* Enhanced flame effect */
+.flame {
+    clip-path: polygon(
+        0% 100%, 8% 70%, 15% 100%, 23% 60%, 30% 100%, 38% 75%, 45% 100%,
+        53% 65%, 60% 100%, 68% 80%, 75% 100%, 83% 55%, 90% 100%, 100% 85%, 100% 100%
+    );
+    filter: blur(0.5px);
+}
+
+/* Custom scrollbar for webkit browsers */
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #001a00;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #FF00FF;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #00FFFF;
+}
+
+/* Button pressed effect */
+button:active {
+    transform: scale(0.98);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Focus states for accessibility */
+select:focus, button:focus {
+    outline: 2px solid #00FFFF;
+    outline-offset: 2px;
+}
+
+/* Retro scan lines effect (optional) */
+.scan-lines::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        transparent 0%,
+        rgba(0, 255, 255, 0.03) 50%,
+        transparent 100%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    animation: scan 0.1s linear infinite;
+}
+
+@keyframes scan {
+    0% { background-position: 0 0; }
+    100% { background-position: 0 4px; }
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 640px) {
+    .flame {
+        height: 20px;
+    }
+    
+    /* Adjust star count for mobile performance */
+    .star:nth-child(n+26) {
+        display: none;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .bg-retro-green {
+        background-color: #000000;
+    }
+    
+    .text-retro-lime {
+        color: #00FF00;
+    }
+    
+    .border-retro-magenta {
+        border-color: #FFFFFF;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .animate-blink,
+    .animate-twinkle,
+    .animate-flicker,
+    .animate-pulse {
+        animation: none;
+    }
+    
+    .star {
+        opacity: 0.5;
+    }
+}
+
+/* Print styles */
+@media print {
+    .fixed,
+    .absolute,
+    .flame-container {
+        display: none;
+    }
+    
+    body {
+        background: white;
+        color: black;
+    }
+    
+    .bg-black {
+        background: white;
+        border: 2px solid black;
+    }
+}
