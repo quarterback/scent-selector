@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ron's Fragrance Selector</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'comic': ['"Comic Sans MS"', '"Comic Sans"', 'cursive'],
+                        'mono': ['"Courier New"', 'monospace']
+                    },
+                    colors: {
+                        'retro-green': '#001a00',
+                        'retro-lime': '#00FF00',
+                        'retro-cyan': '#00FFFF',
+                        'retro-magenta': '#FF00FF',
+                        'retro-yellow': '#FFFF00',
+                        'retro-red': '#FF0000',
+                        'retro-blue': '#000080'
+                    },
+                    animation: {
+                        'blink': 'blink 1s step-end infinite',
+                        'twinkle': 'twinkle 1s infinite',
+                        'flicker': 'flicker 0.5s infinite alternate',
+                        'rainbow': 'rainbow 2s linear infinite'
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-retro-green font-comic text-retro-yellow min-h-screen relative overflow-x-hidden">
+    <!-- Stars background -->
+    <div class="fixed inset-0 pointer-events-none z-0" id="stars"></div>
+    
+    <!-- Main container -->
+    <div class="relative z-10 min-h-screen flex flex-col">
+        <!-- Header marquee -->
+        <div class="py-4">
+            <div class="animate-pulse text-center">
+                <span class="text-2xl md:text-3xl font-bold">
+                    <span class="text-retro-red">W</span><span class="text-orange-500">e</span><span class="text-retro-yellow">l</span><span class="text-retro-lime">c</span><span class="text-blue-500">o</span><span class="text-indigo-600">m</span><span class="text-purple-600">e</span>
+                    <span class="text-retro-red">t</span><span class="text-orange-500">o</span>
+                    <span class="text-retro-yellow">R</span><span class="text-retro-lime">o</span><span class="text-blue-500">n</span><span class="text-indigo-600">'</span><span class="text-purple-600">s</span>
+                    <span class="text-retro-red">F</span><span class="text-orange-500">r</span><span class="text-retro-yellow">a</span><span class="text-retro-lime">g</span><span class="text-blue-500">r</span><span class="text-indigo-600">a</span><span class="text-purple-600">n</span><span class="text-retro-red">c</span><span class="text-orange-500">e</span>
+                    <span class="text-retro-yellow">P</span><span class="text-retro-lime">a</span><span class="text-blue-500">g</span><span class="text-indigo-600">e</span><span class="text-purple-600">!</span>
+                </span>
+            </div>
+        </div>
+        
+        <!-- Main content -->
+        <div class="flex-1 flex items-center justify-center p-4">
+            <div class="w-full max-w-2xl">
+                <!-- Main card -->
+                <div class="bg-black border-4 border-retro-magenta rounded-lg shadow-2xl shadow-retro-cyan/50 p-6 md:p-8 relative overflow-hidden">
+                    <!-- Animated border effect -->
+                    <div class="absolute inset-0 border-4 border-retro-cyan opacity-20 animate-pulse rounded-lg"></div>
+                    
+                    <!-- Title -->
+                    <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold text-retro-magenta text-center mb-8 animate-blink drop-shadow-lg">
+                        RON'S FRAGRANCE SELECTOR
+                    </h1>
+                    
+                    <!-- Under construction GIF placeholder -->
+                    <div class="text-center mb-8">
+                        <div class="inline-block bg-retro-yellow text-black px-4 py-2 rounded font-bold animate-pulse">
+                            🚧 UNDER CONSTRUCTION 🚧
+                        </div>
+                    </div>
+                    
+                    <!-- Form -->
+                    <div class="space-y-6">
+                        <!-- Season selector -->
+                        <div class="space-y-2">
+                            <label for="season" class="block text-retro-lime font-bold text-lg md:text-xl">
+                                ★★★ SELECT SEASON: ★★★
+                            </label>
+                            <select id="season" class="w-full p-3 bg-retro-blue text-white border-2 border-gray-400 rounded font-mono text-base md:text-lg focus:border-retro-cyan focus:outline-none transition-colors">
+                                <option value="Spring/Summer">Spring/Summer</option>
+                                <option value="Fall/Winter">Fall/Winter</option>
+                                <option value="All Seasons">All Seasons</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Occasion selector -->
+                        <div class="space-y-2">
+                            <label for="occasion" class="block text-retro-lime font-bold text-lg md:text-xl">
+                                ★★★ SELECT OCCASION: ★★★
+                            </label>
+                            <select id="occasion" class="w-full p-3 bg-retro-blue text-white border-2 border-gray-400 rounded font-mono text-base md:text-lg focus:border-retro-cyan focus:outline-none transition-colors">
+                                <option value="Work">Work</option>
+                                <option value="Going Out/Date">Going Out/Date</option>
+                                <option value="Crowded Spaces">Crowded Spaces</option>
+                                <option value="Casual Outdoor">Casual Outdoor</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Submit button -->
+                        <div class="text-center pt-4">
+                            <button onclick="pickFragrance()" class="bg-gradient-to-b from-retro-red to-retro-magenta text-white font-bold text-lg md:text-xl px-8 py-3 rounded-lg border-2 border-gray-400 hover:from-retro-magenta hover:to-retro-red active:border-inset transform hover:scale-105 transition-all duration-200 shadow-lg">
+                                CLICK HERE!!!
+                            </button>
+                        </div>
+                        
+                        <!-- Result display -->
+                        <div id="result" class="min-h-[100px] bg-black border-2 border-gray-400 rounded p-4 font-mono text-retro-lime text-base md:text-lg leading-relaxed text-center flex items-center justify-center">
+                            <!-- Results will appear here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Divider -->
+                    <div class="my-8 h-3 bg-gradient-to-r from-retro-red via-retro-yellow to-retro-red rounded animate-pulse"></div>
+                    
+                    <!-- Flame effect -->
+                    <div class="flame-container relative h-8 mt-6">
+                        <div class="flame absolute bottom-0 left-0 w-full h-full bg-gradient-to-t from-retro-red to-retro-yellow rounded-t-full animate-flicker"></div>
+                    </div>
+                </div>
+                
+                <!-- Footer elements -->
+                <div class="text-center mt-8 space-y-4">
+                    <!-- Visitor counter -->
+                    <div class="inline-block bg-black text-white border border-gray-400 px-4 py-2 font-mono">
+                        You are visitor #: 00001337
+                    </div>
+                    
+                    <!-- Web ring -->
+                    <div class="flex justify-center items-center space-x-4 text-retro-cyan">
+                        <a href="#" class="hover:text-retro-magenta hover:underline font-bold transition-colors">◄ PREV</a>
+                        <span class="text-white">|</span>
+                        <a href="#" class="hover:text-retro-magenta hover:underline font-bold transition-colors">HOME</a>
+                        <span class="text-white">|</span>
+                        <a href="#" class="hover:text-retro-magenta hover:underline font-bold transition-colors">NEXT ►</a>
+                    </div>
+                    
+                    <!-- Bottom marquee -->
+                    <div class="text-retro-cyan text-sm animate-pulse">
+                        This page best viewed in Netscape Navigator 4.0 at 800x600 resolution!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Create stars
+        function createStars() {
+            const starsContainer = document.getElementById('stars');
+            const starsCount = 50;
+            
+            for (let i = 0; i < starsCount; i++) {
+                const star = document.createElement('div');
+                star.className = 'absolute w-1 h-1 bg-white rounded-full animate-twinkle';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.animationDelay = Math.random() * 2 + 's';
+                starsContainer.appendChild(star);
+            }
+        }
+        
+        // Create stars on page load
+        window.addEventListener('load', createStars);
+        
+        // Fragrance selection logic
+        const fragrances = [
+            { name: "A Grove by the Sea", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Rouge Smoking (Extrait)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "The One Luminous Night", season: "Fall/Winter", occasion: "Work" },
+            { name: "Poudrextase", season: "Spring/Summer", occasion: "Work" },
+            { name: "Apricot in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Kasbah", season: "Fall/Winter", occasion: "Work" },
+            { name: "Casablanca", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Quercus", season: "Spring/Summer", occasion: "Work" },
+            { name: "Eau de Magnolia", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Barcelona", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Crush Balls", season: "Spring/Summer", occasion: "Going Out/Date" },
+            { name: "Notturno", season: "Fall/Winter", occasion: "Work" },
+            { name: "Russian Tea", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "The Architects Club", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "To My Father", season: "Fall/Winter", occasion: "Work" },
+            { name: "Sydney Rock Pool", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Bois d'Ascèse", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Radio Bombay", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Dark Wave", season: "Fall/Winter", occasion: "Crowded Spaces" },
+            { name: "Indigo Smoke", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Poets of Berlin", season: "Spring/Summer", occasion: "Work" },
+            { name: "Morning Chess", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Do Not Disturb", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Green Spell", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Nordic Noir", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Say Yes", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Collection Grands Crus - Azur Riviera", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Collection Grands Crus - Oud Al Sahraa", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Collection Grands Crus - Hoja de Cuba", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Collection Grands Crus - Russkaya Кожа", season: "Fall/Winter", occasion: "Work" },
+            { name: "Vetiverissimo", season: "Spring/Summer", occasion: "Work" },
+            { name: "Iris Cendré", season: "Spring/Summer", occasion: "Work" },
+            { name: "Cologne du Maghreb (2021)", season: "All Seasons", occasion: "Casual Outdoor" },
+            { name: "Unsettled", season: "All Seasons", occasion: "Crowded Spaces" },
+            { name: "Ummagumma", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Silky Woods", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Delphi (Huile Parfum)", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Cashmeran in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Overnight (Eau de Parfum)", season: "All Seasons", occasion: "Work" },
+            { name: "Toji", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Pine in Acacia", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Ebony in Oak", season: "Fall/Winter", occasion: "Casual Outdoor" },
+            { name: "Bohemian Lime", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Sexy Garrigue", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Gris Charnel (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Rouge Smoking (Eau de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Black Afgano (Extrait de Parfum)", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Ingenious Ginger", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Assam of India", season: "Spring/Summer", occasion: "Casual Outdoor" },
+            { name: "Gozo", season: "Spring/Summer", occasion: "Going Out/Date" },
+            { name: "Plum in Cognac", season: "Fall/Winter", occasion: "Going Out/Date" },
+            { name: "Vetiveria", season: "All Seasons", occasion: "Work" },
+            { name: "Silver Saffron", season: "Fall/Winter", occasion: "Crowded Spaces" }
+        ];
+
+        function pickFragrance() {
+            const season = document.getElementById("season").value;
+            const occasion = document.getElementById("occasion").value;
+            const resultElement = document.getElementById("result");
+            
+            // Show loading message
+            resultElement.innerHTML = '<div class="animate-pulse">What will the smell be today?</div>';
+            
+            // Simulate loading time for authentic retro feeling
+            setTimeout(() => {
+                const filtered = fragrances.filter(f => 
+                    (f.season === season || f.season === "All Seasons" || season === "All Seasons") && 
+                    f.occasion === occasion
+                );
+                
+                if (filtered.length > 0) {
+                    const selection = filtered[Math.floor(Math.random() * filtered.length)].name;
+                    resultElement.innerHTML = `
+                        <div class="animate-pulse">
+                            <div class="text-retro-yellow mb-2">*********************</div>
+                            <div class="text-white mb-1">TODAY'S FRAGRANCE:</div>
+                            <div class="text-retro-yellow text-xl font-bold mb-2">${selection}</div>
+                            <div class="text-retro-yellow">*********************</div>
+                        </div>
+                    `;
+                } else {
+                    resultElement.innerHTML = '<div class="text-retro-red animate-pulse">NO MATCH FOUND! TRY DIFFERENT CRITERIA!</div>';
+                }
+            }, 1500);
+        }
+    </script>
+</body>
+</html>
