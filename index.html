@@ -80,7 +80,7 @@
                             <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
                                 ★★★ SELECT SEASON: ★★★
                             </label>
-                            <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
+                            <div class="grid grid-cols-2 md:grid-cols-6 gap-2">
                                 <button onclick="selectSeason('Spring')" id="season-spring" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Spring
                                 </button>
@@ -93,6 +93,9 @@
                                 <button onclick="selectSeason('Winter')" id="season-winter" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Winter
                                 </button>
+                                <button onclick="selectSeason('Shoulder')" id="season-shoulder" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Shoulder
+                                </button>
                                 <button onclick="selectSeason('Anytime')" id="season-anytime" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Anytime
                                 </button>
@@ -104,12 +107,15 @@
                             <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
                                 ★★★ SELECT OCCASION: ★★★
                             </label>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 <button onclick="selectOccasion('Work')" id="occasion-work" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Work
                                 </button>
-                                <button onclick="selectOccasion('Going Out/Date')" id="occasion-date" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
-                                    Going Out/Date
+                                <button onclick="selectOccasion('Date Night')" id="occasion-date" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Date Night
+                                </button>
+                                <button onclick="selectOccasion('Going Out')" id="occasion-goingout" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Going Out
                                 </button>
                                 <button onclick="selectOccasion('Crowded Spaces')" id="occasion-crowd" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Crowded Spaces
@@ -226,7 +232,8 @@
             let btnId = '';
             switch(occasion) {
                 case 'Work': btnId = 'occasion-work'; break;
-                case 'Going Out/Date': btnId = 'occasion-date'; break;
+                case 'Date Night': btnId = 'occasion-date'; break;
+                case 'Going Out': btnId = 'occasion-goingout'; break;
                 case 'Crowded Spaces': btnId = 'occasion-crowd'; break;
                 case 'Casual Outdoor': btnId = 'occasion-outdoor'; break;
             }
@@ -239,76 +246,91 @@
         }
         
         // Fragrance selection logic
-        // Collection synced with Parfumo "I have" (68 fragrances).
+        // Collection synced from Parfumo + Fragrantica "I have" (union, 81 fragrances).
+        // Seasons: Spring, Summer, Fall, Winter, Shoulder (transitional), Anytime
+        // Occasions: Work, Date Night, Going Out, Crowded Spaces, Casual Outdoor
         const fragrances = [
-            { name: "19-69 | Kasbah", season: "Fall", occasion: "Going Out/Date" },
+            { name: "19-69 | Kasbah", season: "Fall", occasion: "Date Night" },
             { name: "Agonist | Arctic Jade", season: "Winter", occasion: "Casual Outdoor" },
             { name: "Agonist | Nordic Noir", season: "Anytime", occasion: "Crowded Spaces" },
-            { name: "Agonist | Say Yes", season: "Fall", occasion: "Going Out/Date" },
+            { name: "Agonist | Say Yes", season: "Fall", occasion: "Date Night" },
             { name: "Argos | Neptune's Trident", season: "Summer", occasion: "Work" },
+            { name: "Arquiste | A Grove by the Sea", season: "Summer", occasion: "Casual Outdoor" },
             { name: "Arquiste | Indigo Smoke", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Arquiste | Nocturnality", season: "Winter", occasion: "Going Out/Date" },
+            { name: "Arquiste | Nocturnality", season: "Winter", occasion: "Date Night" },
             { name: "Arquiste | Sydney Rock Pool", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Arquiste | The Architects Club", season: "Winter", occasion: "Going Out/Date" },
+            { name: "Arquiste | The Architects Club", season: "Winter", occasion: "Going Out" },
             { name: "Arquiste | Tropical", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "BDK Parfums | Gris Charnel (Eau de Parfum)", season: "Winter", occasion: "Going Out/Date" },
-            { name: "BDK Parfums | Oud Abramad", season: "Winter", occasion: "Going Out/Date" },
-            { name: "BDK Parfums | Rouge Smoking (Eau de Parfum)", season: "Winter", occasion: "Going Out/Date" },
-            { name: "BDK Parfums | Rouge Smoking (Extrait)", season: "Winter", occasion: "Going Out/Date" },
+            { name: "BDK Parfums | Gris Charnel (Eau de Parfum)", season: "Winter", occasion: "Date Night" },
+            { name: "BDK Parfums | Oud Abramad", season: "Winter", occasion: "Going Out" },
+            { name: "BDK Parfums | Rouge Smoking (Eau de Parfum)", season: "Winter", occasion: "Date Night" },
+            { name: "BDK Parfums | Rouge Smoking (Extrait)", season: "Winter", occasion: "Date Night" },
+            { name: "BDK Parfums | Vanille Caviar", season: "Winter", occasion: "Date Night" },
             { name: "Berdoues | Assam of India", season: "Summer", occasion: "Casual Outdoor" },
             { name: "Berdoues | Azur Riviera", season: "Summer", occasion: "Casual Outdoor" },
             { name: "Berdoues | Hoja de Cuba", season: "Fall", occasion: "Casual Outdoor" },
             { name: "Berdoues | Oud Al Sahraa", season: "Fall", occasion: "Work" },
             { name: "Berdoues | Russkaya Kozha", season: "Winter", occasion: "Work" },
-            { name: "Blocki | Press Club", season: "Fall", occasion: "Going Out/Date" },
+            { name: "Blocki | Press Club", season: "Fall", occasion: "Going Out" },
             { name: "Carner Barcelona | Sal y Limón", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "d'Annam | Japanese Whiskey", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Discothèque | Next to Me or Nothing", season: "Winter", occasion: "Going Out/Date" },
+            { name: "d'Annam | Japanese Whiskey", season: "Winter", occasion: "Going Out" },
+            { name: "Discothèque | Next to Me or Nothing", season: "Winter", occasion: "Going Out" },
             { name: "Dolce & Gabbana | The One Luminous Night", season: "Winter", occasion: "Work" },
-            { name: "DS & Durga | Crush Balls", season: "Summer", occasion: "Going Out/Date" },
-            { name: "DS & Durga | Radio Bombay", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "DS & Durga | Crush Balls", season: "Summer", occasion: "Going Out" },
+            { name: "DS & Durga | Radio Bombay", season: "Shoulder", occasion: "Casual Outdoor" },
             { name: "Eris Parfums | Green Spell", season: "Spring", occasion: "Casual Outdoor" },
             { name: "Frederic Malle | Eau de Magnolia", season: "Spring", occasion: "Casual Outdoor" },
+            { name: "FZOTIC | Monserrat", season: "Spring", occasion: "Casual Outdoor" },
             { name: "FZOTIC | Room 237", season: "Spring", occasion: "Casual Outdoor" },
             { name: "FZOTIC | Ummagumma", season: "Fall", occasion: "Casual Outdoor" },
             { name: "FZOTIC | Unsettled", season: "Anytime", occasion: "Crowded Spaces" },
             { name: "FZOTIC | Vetiverissimo", season: "Spring", occasion: "Work" },
-            { name: "Goldfield & Banks | Silky Woods", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Jeroboam | Gozo", season: "Summer", occasion: "Going Out/Date" },
+            { name: "Goldfield & Banks | Bohemian Lime", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Goldfield & Banks | Ingenious Ginger", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Goldfield & Banks | Pacific Rock Flower", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Goldfield & Banks | Pacific Rock Moss", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Goldfield & Banks | Silky Woods", season: "Shoulder", occasion: "Casual Outdoor" },
+            { name: "Jeroboam | Gozo", season: "Summer", occasion: "Going Out" },
             { name: "J-Scent | Paper Soap", season: "Anytime", occasion: "Work" },
-            { name: "Kismet Olfactive | Wedding in Oaxaca", season: "Summer", occasion: "Going Out/Date" },
+            { name: "Kismet Olfactive | Wedding in Oaxaca", season: "Summer", occasion: "Going Out" },
             { name: "La Boticá | Barcelona", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "La Boticá | Casablanca", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Le Labo | Gaiac 10", season: "Fall", occasion: "Work" },
+            { name: "La Boticá | Casablanca", season: "Winter", occasion: "Date Night" },
+            { name: "Le Labo | Gaiac 10", season: "Shoulder", occasion: "Work" },
             { name: "Les Bains Guerbois | 1979 New Wave", season: "Spring", occasion: "Work" },
             { name: "Marlou | Poudrextase", season: "Spring", occasion: "Work" },
             { name: "Meo Fusciuni | Notturno", season: "Winter", occasion: "Work" },
             { name: "Naomi Goodsir | Bois d'Ascèse", season: "Fall", occasion: "Casual Outdoor" },
             { name: "Naomi Goodsir | Iris Cendré", season: "Spring", occasion: "Work" },
-            { name: "Nasomatto | Baraonda (Oil-based Extrait de Parfum)", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Nasomatto | Black Afgano (Extrait de Parfum)", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Nasomatto | Narcotic Venus (Oil-based Extrait de Parfum)", season: "Summer", occasion: "Going Out/Date" },
-            { name: "Olo | Dark Wave", season: "Fall", occasion: "Going Out/Date" },
+            { name: "Nasomatto | Baraonda (Oil-based Extrait de Parfum)", season: "Winter", occasion: "Going Out" },
+            { name: "Nasomatto | Black Afgano (Extrait de Parfum)", season: "Winter", occasion: "Date Night" },
+            { name: "Nasomatto | Narcotic Venus (Oil-based Extrait de Parfum)", season: "Summer", occasion: "Date Night" },
+            { name: "Olo | Dark Wave", season: "Fall", occasion: "Date Night" },
             { name: "Olo | Toji", season: "Winter", occasion: "Casual Outdoor" },
             { name: "Ormonde Jayne | Vetiveria", season: "Anytime", occasion: "Work" },
             { name: "Penhaligon's | Quercus", season: "Spring", occasion: "Work" },
-            { name: "Scents of Wood | Apricot in Cognac", season: "Fall", occasion: "Going Out/Date" },
-            { name: "Scents of Wood | Cashmeran in Cognac", season: "Winter", occasion: "Going Out/Date" },
+            { name: "Scents of Wood | Apricot in Cognac", season: "Fall", occasion: "Date Night" },
+            { name: "Scents of Wood | Birch in Acacia", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "Scents of Wood | Cashmeran in Cognac", season: "Winter", occasion: "Date Night" },
             { name: "Scents of Wood | Ebony in Oak", season: "Winter", occasion: "Casual Outdoor" },
-            { name: "Scents of Wood | Mineral Cedar", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "Scents of Wood | Evergreen in Snow", season: "Winter", occasion: "Casual Outdoor" },
+            { name: "Scents of Wood | Mineral Cedar", season: "Shoulder", occasion: "Casual Outdoor" },
             { name: "Scents of Wood | Pine in Acacia", season: "Spring", occasion: "Casual Outdoor" },
-            { name: "Scents of Wood | Plum in Cognac", season: "Fall", occasion: "Going Out/Date" },
+            { name: "Scents of Wood | Plum in Cognac", season: "Fall", occasion: "Date Night" },
             { name: "Scents of Wood | Strength in Santal", season: "Anytime", occasion: "Work" },
+            { name: "Scents of Wood | Vanilla in Bourbon", season: "Winter", occasion: "Date Night" },
             { name: "Siela | Delphi (Huile Parfum)", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Siela | Overnight (Eau de Parfum)", season: "Fall", occasion: "Going Out/Date" },
+            { name: "Siela | Overnight (Eau de Parfum)", season: "Fall", occasion: "Date Night" },
             { name: "Tauer Perfumes | Cologne du Maghreb (2021)", season: "Anytime", occasion: "Casual Outdoor" },
+            { name: "Tauer Perfumes | L'Air Des Alpes Suisses", season: "Winter", occasion: "Casual Outdoor" },
             { name: "The Harmonist | Yin Transformation", season: "Spring", occasion: "Work" },
             { name: "Une Nuit Nomade | Silver Saffron", season: "Winter", occasion: "Crowded Spaces" },
             { name: "Veronique Gabai | Sexy Garrigue", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Vilhelm Parfumerie | Morning Chess", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "Vilhelm Parfumerie | Black Citrus", season: "Fall", occasion: "Work" },
+            { name: "Vilhelm Parfumerie | Do Not Disturb", season: "Fall", occasion: "Work" },
+            { name: "Vilhelm Parfumerie | Morning Chess", season: "Shoulder", occasion: "Casual Outdoor" },
             { name: "Vilhelm Parfumerie | Poets of Berlin", season: "Spring", occasion: "Work" },
             { name: "Vilhelm Parfumerie | To My Father", season: "Winter", occasion: "Work" },
-            { name: "Xerjoff | Naxos", season: "Fall", occasion: "Going Out/Date" }
+            { name: "Xerjoff | Naxos", season: "Fall", occasion: "Going Out" }
         ];
 
         function pickFragrance() {
