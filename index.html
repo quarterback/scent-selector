@@ -80,7 +80,7 @@
                             <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
                                 ★★★ SELECT SEASON: ★★★
                             </label>
-                            <div class="grid grid-cols-1 md:grid-cols-5 gap-2">
+                            <div class="grid grid-cols-2 md:grid-cols-6 gap-2">
                                 <button onclick="selectSeason('Spring')" id="season-spring" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Spring
                                 </button>
@@ -93,6 +93,9 @@
                                 <button onclick="selectSeason('Winter')" id="season-winter" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Winter
                                 </button>
+                                <button onclick="selectSeason('Shoulder')" id="season-shoulder" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Shoulder
+                                </button>
                                 <button onclick="selectSeason('Anytime')" id="season-anytime" class="season-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Anytime
                                 </button>
@@ -104,12 +107,15 @@
                             <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
                                 ★★★ SELECT OCCASION: ★★★
                             </label>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-2">
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 <button onclick="selectOccasion('Work')" id="occasion-work" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Work
                                 </button>
-                                <button onclick="selectOccasion('Going Out/Date')" id="occasion-date" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
-                                    Going Out/Date
+                                <button onclick="selectOccasion('Date Night')" id="occasion-date" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Date Night
+                                </button>
+                                <button onclick="selectOccasion('Going Out')" id="occasion-goingout" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
+                                    Going Out
                                 </button>
                                 <button onclick="selectOccasion('Crowded Spaces')" id="occasion-crowd" class="occasion-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105">
                                     Crowded Spaces
@@ -120,6 +126,16 @@
                             </div>
                         </div>
                         
+                        <!-- Family selector -->
+                        <div class="space-y-3">
+                            <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
+                                ★★★ SELECT FAMILY: ★★★
+                            </label>
+                            <select onchange="selectFamily(this.value)" id="family-select" class="w-full bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-sm md:text-base text-center cursor-pointer hover:border-retro-cyan focus:border-retro-magenta focus:outline-none transition-all duration-200">
+                                <option value="Any">Any Family</option>
+                            </select>
+                        </div>
+
                         <!-- Submit button -->
                         <div class="text-center pt-4">
                             <button onclick="pickFragrance()" class="bg-gradient-to-b from-retro-red to-retro-magenta text-white font-bold text-lg md:text-xl px-8 py-3 rounded-lg border-2 border-gray-400 hover:from-retro-magenta hover:to-retro-red active:border-inset transform hover:scale-105 transition-all duration-200 shadow-lg">
@@ -132,9 +148,22 @@
                             <!-- Results will appear here -->
                         </div>
                     </div>
-                    
+
                     <!-- Divider -->
                     <div class="my-8 h-3 bg-gradient-to-r from-retro-red via-retro-yellow to-retro-red rounded animate-pulse"></div>
+
+                    <!-- Browse by scent family -->
+                    <div class="space-y-3">
+                        <label class="block text-retro-lime font-bold text-lg md:text-xl text-center">
+                            ★★★ BROWSE BY SCENT FAMILY: ★★★
+                        </label>
+                        <div id="family-buttons" class="grid grid-cols-2 md:grid-cols-3 gap-2">
+                            <!-- Family buttons injected by JS -->
+                        </div>
+                        <div id="family-list" class="bg-black border-2 border-gray-400 rounded p-4 font-mono text-retro-lime text-sm md:text-base leading-relaxed">
+                            <div class="text-center text-retro-cyan animate-pulse">Pick a family above to see what you've got!</div>
+                        </div>
+                    </div>
                     
                     <!-- Flame effect -->
                     <div class="flame-container relative h-8 mt-6">
@@ -189,12 +218,72 @@
         // Selection state
         let selectedSeason = 'Spring';
         let selectedOccasion = 'Work';
-        
+        let selectedFamily = 'Any';
+
+        // Scent families (order shown in the dropdown and browse buttons)
+        const FAMILIES = [
+            "Citrus & Fresh", "Aquatic & Marine", "Green & Herbal", "Floral", "Woody",
+            "Smoky & Incense", "Leather", "Amber & Resinous", "Gourmand & Boozy", "Spicy"
+        ];
+
         // Initialize with defaults
         document.addEventListener('DOMContentLoaded', function() {
             selectSeason('Spring');
             selectOccasion('Work');
+            buildFamilyControls();
         });
+
+        // Populate the family dropdown (picker) and the browse buttons
+        function buildFamilyControls() {
+            const select = document.getElementById('family-select');
+            const buttons = document.getElementById('family-buttons');
+            FAMILIES.forEach(fam => {
+                const count = fragrances.filter(f => f.family === fam).length;
+
+                const opt = document.createElement('option');
+                opt.value = fam;
+                opt.textContent = `${fam} (${count})`;
+                select.appendChild(opt);
+
+                const btn = document.createElement('button');
+                btn.textContent = `${fam} (${count})`;
+                btn.setAttribute('onclick', `browseFamily('${fam.replace(/'/g, "\\'")}')`);
+                btn.className = 'family-btn bg-retro-blue text-white border-2 border-gray-400 rounded p-3 font-mono text-xs md:text-sm hover:bg-blue-700 hover:border-retro-cyan transition-all duration-200 transform hover:scale-105';
+                buttons.appendChild(btn);
+            });
+        }
+
+        function selectFamily(family) {
+            selectedFamily = family;
+        }
+
+        // Browse: show every fragrance in the chosen family, with its season + occasion
+        function browseFamily(family) {
+            // Highlight active browse button
+            document.querySelectorAll('.family-btn').forEach(btn => {
+                const isActive = btn.textContent.startsWith(family + ' (');
+                btn.classList.toggle('bg-retro-cyan', isActive);
+                btn.classList.toggle('text-black', isActive);
+                btn.classList.toggle('border-retro-magenta', isActive);
+                btn.classList.toggle('bg-retro-blue', !isActive);
+                btn.classList.toggle('text-white', !isActive);
+                btn.classList.toggle('border-gray-400', !isActive);
+            });
+
+            const matches = fragrances
+                .filter(f => f.family === family)
+                .sort((a, b) => a.name.localeCompare(b.name));
+
+            const rows = matches.map(f => `
+                <div class="flex justify-between items-baseline gap-3 py-1 border-b border-gray-800">
+                    <span class="text-retro-yellow">${f.name}</span>
+                    <span class="text-retro-cyan whitespace-nowrap text-xs">${f.season} &middot; ${f.occasion}</span>
+                </div>`).join('');
+
+            document.getElementById('family-list').innerHTML = `
+                <div class="text-white mb-2 text-center">${family} &mdash; ${matches.length} fragrance${matches.length === 1 ? '' : 's'}</div>
+                ${rows}`;
+        }
         
         function selectSeason(season) {
             selectedSeason = season;
@@ -226,7 +315,8 @@
             let btnId = '';
             switch(occasion) {
                 case 'Work': btnId = 'occasion-work'; break;
-                case 'Going Out/Date': btnId = 'occasion-date'; break;
+                case 'Date Night': btnId = 'occasion-date'; break;
+                case 'Going Out': btnId = 'occasion-goingout'; break;
                 case 'Crowded Spaces': btnId = 'occasion-crowd'; break;
                 case 'Casual Outdoor': btnId = 'occasion-outdoor'; break;
             }
@@ -239,88 +329,119 @@
         }
         
         // Fragrance selection logic
+        // Collection synced from Parfumo + Fragrantica "I have" (union, 80 fragrances).
+        // Seasons: Spring, Summer, Fall, Winter, Shoulder (transitional), Anytime
+        // Occasions: Work, Date Night, Going Out, Crowded Spaces, Casual Outdoor
+        // Families: Citrus & Fresh, Aquatic & Marine, Green & Herbal, Floral, Woody,
+        //           Smoky & Incense, Leather, Amber & Resinous, Gourmand & Boozy, Spicy
         const fragrances = [
-            { name: "Agonist | Arctic Jade", season: "Winter", occasion: "Casual Outdoor" },
-            { name: "Agonist | Nordic Noir", season: "Anytime", occasion: "Crowded Spaces" },
-            { name: "Arquiste | Indigo Smoke", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Arquiste | Sydney Rock Pool", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "BDK Parfums | Gris Charnel (Eau de Parfum)", season: "Winter", occasion: "Going Out/Date" },
-            { name: "BDK Parfums | Oud Abramad", season: "Winter", occasion: "Going Out/Date" },
-            { name: "BDK Parfums | Rouge Smoking (Extrait)", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Berdoues | Assam of India", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Berdoues | Azur Riviera", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Berdoues | Hoja de Cuba", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Berdoues | Russkaya Kozha", season: "Winter", occasion: "Work" },
-            { name: "Carner Barcelona | Sal y Limón", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "d'Annam | Japanese Whiskey", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Dolce & Gabbana | The One Luminous Night", season: "Winter", occasion: "Work" },
-            { name: "DS & Durga | Crush Balls", season: "Summer", occasion: "Going Out/Date" },
-            { name: "DS & Durga | Radio Bombay", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Frederic Malle | Eau de Magnolia", season: "Spring", occasion: "Casual Outdoor" },
-            { name: "FZOTIC | Ummagumma", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "FZOTIC | Unsettled", season: "Anytime", occasion: "Crowded Spaces" },
-            { name: "FZOTIC | Vetiverissimo", season: "Spring", occasion: "Work" },
-            { name: "Goldfield & Banks | Ingenious Ginger", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Goldfield & Banks | Pacific Rock Flower", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Goldfield & Banks | Silky Woods", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Jeroboam | Gozo", season: "Summer", occasion: "Going Out/Date" },
-            { name: "Jeroboam | Kun Amo", season: "Winter", occasion: "Work" },
-            { name: "J-Scent | Paper Soap", season: "Anytime", occasion: "Work" },
-            { name: "Kismet Olfactive | Wedding in Oaxaca", season: "Summer", occasion: "Going Out/Date" },
-            { name: "La Boticá | Barcelona", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "La Boticá | Casablanca", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Le Labo | Gaiac 10", season: "Fall", occasion: "Work" },
-            { name: "Marlou | Poudrextase", season: "Spring", occasion: "Work" },
-            { name: "Meo Fusciuni | Notturno", season: "Winter", occasion: "Work" },
-            { name: "Naomi Goodsir | Bois d'Ascèse", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Naomi Goodsir | Iris Cendré", season: "Spring", occasion: "Work" },
-            { name: "Nasomatto | Baraonda (Oil-based Extrait de Parfum)", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Nasomatto | Black Afgano (Extrait de Parfum)", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Ormonde Jayne | Vetiveria", season: "Anytime", occasion: "Work" },
-            { name: "Penhaligon's | Quercus", season: "Spring", occasion: "Work" },
-            { name: "Scents of Wood | Apricot in Cognac", season: "Fall", occasion: "Going Out/Date" },
-            { name: "Scents of Wood | Birch in Acacia", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Scents of Wood | Cashmeran in Cognac", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Scents of Wood | Ebony in Oak", season: "Winter", occasion: "Casual Outdoor" },
-            { name: "Scents of Wood | Evergreen in Snow", season: "Winter", occasion: "Casual Outdoor" },
-            { name: "Scents of Wood | Mineral Cedar", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Scents of Wood | Pine in Acacia", season: "Spring", occasion: "Casual Outdoor" },
-            { name: "Scents of Wood | Plum in Cognac", season: "Fall", occasion: "Going Out/Date" },
-            { name: "Scents of Wood | Strength in Santal", season: "Anytime", occasion: "Work" },
-            { name: "Scents of Wood | Vanilla in Bourbon", season: "Winter", occasion: "Going Out/Date" },
-            { name: "Siela | Delphi (Huile Parfum)", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Tauer Perfumes | Cologne du Maghreb (2021)", season: "Anytime", occasion: "Casual Outdoor" },
-            { name: "Tauer Perfumes | L'Air Des Alpes Suisses", season: "Winter", occasion: "Casual Outdoor" },
-            { name: "The Harmonist | Yin Transformation", season: "Spring", occasion: "Work" },
-            { name: "Une Nuit Nomade | Silver Saffron", season: "Winter", occasion: "Crowded Spaces" },
-            { name: "Veronique Gabai | Sexy Garrigue", season: "Summer", occasion: "Casual Outdoor" },
-            { name: "Vilhelm Parfumerie | Morning Chess", season: "Fall", occasion: "Casual Outdoor" },
-            { name: "Vilhelm Parfumerie | Poets of Berlin", season: "Spring", occasion: "Work" },
-            { name: "Vilhelm Parfumerie | To My Father", season: "Winter", occasion: "Work" }
+            { name: "19-69 | Kasbah", family: "Amber & Resinous", season: "Fall", occasion: "Date Night" },
+            { name: "Agonist | Arctic Jade", family: "Floral", season: "Spring", occasion: "Casual Outdoor" },
+            { name: "Agonist | Nordic Noir", family: "Green & Herbal", season: "Shoulder", occasion: "Crowded Spaces" },
+            { name: "Agonist | Say Yes", family: "Gourmand & Boozy", season: "Fall", occasion: "Date Night" },
+            { name: "Argos | Neptune's Trident", family: "Citrus & Fresh", season: "Spring", occasion: "Work" },
+            { name: "Arquiste | A Grove by the Sea", family: "Green & Herbal", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Arquiste | Indigo Smoke", family: "Smoky & Incense", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "Arquiste | Nocturnality", family: "Leather", season: "Winter", occasion: "Date Night" },
+            { name: "Arquiste | Sydney Rock Pool", family: "Aquatic & Marine", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Arquiste | The Architects Club", family: "Amber & Resinous", season: "Winter", occasion: "Going Out" },
+            { name: "Arquiste | Tropical", family: "Floral", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "BDK Parfums | Gris Charnel (Eau de Parfum)", family: "Woody", season: "Shoulder", occasion: "Date Night" },
+            { name: "BDK Parfums | Oud Abramad", family: "Woody", season: "Winter", occasion: "Going Out" },
+            { name: "BDK Parfums | Rouge Smoking (Eau de Parfum)", family: "Gourmand & Boozy", season: "Winter", occasion: "Date Night" },
+            { name: "BDK Parfums | Rouge Smoking (Extrait)", family: "Gourmand & Boozy", season: "Winter", occasion: "Date Night" },
+            { name: "BDK Parfums | Vanille Caviar", family: "Gourmand & Boozy", season: "Winter", occasion: "Date Night" },
+            { name: "Berdoues | Assam of India", family: "Green & Herbal", season: "Shoulder", occasion: "Casual Outdoor" },
+            { name: "Berdoues | Azur Riviera", family: "Aquatic & Marine", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Berdoues | Hoja de Cuba", family: "Woody", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "Berdoues | Oud Al Sahraa", family: "Woody", season: "Fall", occasion: "Work" },
+            { name: "Berdoues | Russkaya Kozha", family: "Leather", season: "Fall", occasion: "Work" },
+            { name: "Blocki | Press Club", family: "Amber & Resinous", season: "Fall", occasion: "Going Out" },
+            { name: "Carner Barcelona | Sal y Limón", family: "Citrus & Fresh", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "d'Annam | Japanese Whiskey", family: "Gourmand & Boozy", season: "Fall", occasion: "Going Out" },
+            { name: "Discothèque | Next to Me or Nothing", family: "Leather", season: "Winter", occasion: "Going Out" },
+            { name: "Dolce & Gabbana | The One Luminous Night", family: "Spicy", season: "Fall", occasion: "Work" },
+            { name: "DS & Durga | Crush Balls", family: "Green & Herbal", season: "Summer", occasion: "Going Out" },
+            { name: "DS & Durga | Radio Bombay", family: "Woody", season: "Anytime", occasion: "Casual Outdoor" },
+            { name: "Eris Parfums | Green Spell", family: "Green & Herbal", season: "Spring", occasion: "Casual Outdoor" },
+            { name: "Frederic Malle | Eau de Magnolia", family: "Floral", season: "Spring", occasion: "Casual Outdoor" },
+            { name: "FZOTIC | Monserrat", family: "Floral", season: "Spring", occasion: "Casual Outdoor" },
+            { name: "FZOTIC | Room 237", family: "Green & Herbal", season: "Shoulder", occasion: "Casual Outdoor" },
+            { name: "FZOTIC | Ummagumma", family: "Smoky & Incense", season: "Winter", occasion: "Casual Outdoor" },
+            { name: "FZOTIC | Unsettled", family: "Aquatic & Marine", season: "Summer", occasion: "Crowded Spaces" },
+            { name: "FZOTIC | Vetiverissimo", family: "Woody", season: "Anytime", occasion: "Work" },
+            { name: "Goldfield & Banks | Bohemian Lime", family: "Citrus & Fresh", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Goldfield & Banks | Ingenious Ginger", family: "Spicy", season: "Shoulder", occasion: "Casual Outdoor" },
+            { name: "Goldfield & Banks | Pacific Rock Flower", family: "Floral", season: "Spring", occasion: "Casual Outdoor" },
+            { name: "Goldfield & Banks | Pacific Rock Moss", family: "Aquatic & Marine", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Goldfield & Banks | Silky Woods", family: "Woody", season: "Winter", occasion: "Casual Outdoor" },
+            { name: "Jeroboam | Gozo", family: "Floral", season: "Shoulder", occasion: "Going Out" },
+            { name: "J-Scent | Paper Soap", family: "Floral", season: "Spring", occasion: "Work" },
+            { name: "Kismet Olfactive | Wedding in Oaxaca", family: "Floral", season: "Summer", occasion: "Going Out" },
+            { name: "La Boticá | Barcelona", family: "Floral", season: "Spring", occasion: "Casual Outdoor" },
+            { name: "La Boticá | Casablanca", family: "Green & Herbal", season: "Spring", occasion: "Date Night" },
+            { name: "Le Labo | Gaiac 10", family: "Woody", season: "Anytime", occasion: "Work" },
+            { name: "Les Bains Guerbois | 1979 New Wave", family: "Woody", season: "Shoulder", occasion: "Work" },
+            { name: "Marlou | Poudrextase", family: "Amber & Resinous", season: "Winter", occasion: "Work" },
+            { name: "Naomi Goodsir | Bois d'Ascèse", family: "Smoky & Incense", season: "Winter", occasion: "Casual Outdoor" },
+            { name: "Naomi Goodsir | Iris Cendré", family: "Smoky & Incense", season: "Fall", occasion: "Work" },
+            { name: "Nasomatto | Baraonda (Oil-based Extrait de Parfum)", family: "Gourmand & Boozy", season: "Fall", occasion: "Going Out" },
+            { name: "Nasomatto | Black Afgano (Extrait de Parfum)", family: "Smoky & Incense", season: "Winter", occasion: "Date Night" },
+            { name: "Nasomatto | Narcotic Venus (Oil-based Extrait de Parfum)", family: "Floral", season: "Spring", occasion: "Date Night" },
+            { name: "Olo | Dark Wave", family: "Woody", season: "Fall", occasion: "Date Night" },
+            { name: "Olo | Toji", family: "Woody", season: "Shoulder", occasion: "Casual Outdoor" },
+            { name: "Ormonde Jayne | Vetiveria", family: "Woody", season: "Anytime", occasion: "Work" },
+            { name: "Penhaligon's | Quercus", family: "Citrus & Fresh", season: "Summer", occasion: "Work" },
+            { name: "Scents of Wood | Apricot in Cognac", family: "Gourmand & Boozy", season: "Fall", occasion: "Date Night" },
+            { name: "Scents of Wood | Birch in Acacia", family: "Woody", season: "Winter", occasion: "Casual Outdoor" },
+            { name: "Scents of Wood | Cashmeran in Cognac", family: "Gourmand & Boozy", season: "Winter", occasion: "Date Night" },
+            { name: "Scents of Wood | Ebony in Oak", family: "Woody", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "Scents of Wood | Evergreen in Snow", family: "Woody", season: "Winter", occasion: "Casual Outdoor" },
+            { name: "Scents of Wood | Mineral Cedar", family: "Woody", season: "Shoulder", occasion: "Casual Outdoor" },
+            { name: "Scents of Wood | Pine in Acacia", family: "Woody", season: "Winter", occasion: "Casual Outdoor" },
+            { name: "Scents of Wood | Plum in Cognac", family: "Gourmand & Boozy", season: "Fall", occasion: "Date Night" },
+            { name: "Scents of Wood | Strength in Santal", family: "Woody", season: "Shoulder", occasion: "Work" },
+            { name: "Scents of Wood | Vanilla in Bourbon", family: "Gourmand & Boozy", season: "Winter", occasion: "Date Night" },
+            { name: "Siela | Delphi (Huile Parfum)", family: "Woody", season: "Shoulder", occasion: "Casual Outdoor" },
+            { name: "Siela | Overnight (Eau de Parfum)", family: "Smoky & Incense", season: "Fall", occasion: "Date Night" },
+            { name: "Tauer Perfumes | Cologne du Maghreb (2021)", family: "Citrus & Fresh", season: "Summer", occasion: "Casual Outdoor" },
+            { name: "Tauer Perfumes | L'Air Des Alpes Suisses", family: "Green & Herbal", season: "Shoulder", occasion: "Casual Outdoor" },
+            { name: "The Harmonist | Yin Transformation", family: "Floral", season: "Shoulder", occasion: "Work" },
+            { name: "Une Nuit Nomade | Silver Saffron", family: "Woody", season: "Fall", occasion: "Crowded Spaces" },
+            { name: "Veronique Gabai | Sexy Garrigue", family: "Amber & Resinous", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "Vilhelm Parfumerie | Black Citrus", family: "Woody", season: "Shoulder", occasion: "Work" },
+            { name: "Vilhelm Parfumerie | Do Not Disturb", family: "Floral", season: "Shoulder", occasion: "Work" },
+            { name: "Vilhelm Parfumerie | Morning Chess", family: "Leather", season: "Fall", occasion: "Casual Outdoor" },
+            { name: "Vilhelm Parfumerie | Poets of Berlin", family: "Gourmand & Boozy", season: "Shoulder", occasion: "Work" },
+            { name: "Vilhelm Parfumerie | To My Father", family: "Leather", season: "Winter", occasion: "Work" },
+            { name: "Xerjoff | Naxos", family: "Gourmand & Boozy", season: "Fall", occasion: "Going Out" }
         ];
 
         function pickFragrance() {
             const season = selectedSeason;
             const occasion = selectedOccasion;
+            const family = selectedFamily;
             const resultElement = document.getElementById("result");
-            
+
             // Show loading message
             resultElement.innerHTML = '<div class="animate-pulse">What will the smell be today?</div>';
-            
+
             // Simulate loading time for authentic retro feeling
             setTimeout(() => {
-                const filtered = fragrances.filter(f => 
-                    (f.season === season || f.season === "Anytime" || season === "Anytime") && 
-                    f.occasion === occasion
+                const filtered = fragrances.filter(f =>
+                    (f.season === season || f.season === "Anytime" || season === "Anytime") &&
+                    f.occasion === occasion &&
+                    (family === "Any" || f.family === family)
                 );
-                
+
                 if (filtered.length > 0) {
-                    const selection = filtered[Math.floor(Math.random() * filtered.length)].name;
+                    const selection = filtered[Math.floor(Math.random() * filtered.length)];
                     resultElement.innerHTML = `
                         <div class="animate-pulse">
                             <div class="text-retro-yellow mb-2">*********************</div>
                             <div class="text-white mb-1">TODAY'S FRAGRANCE:</div>
-                            <div class="text-retro-yellow text-xl font-bold mb-2">${selection}</div>
+                            <div class="text-retro-yellow text-xl font-bold mb-2">${selection.name}</div>
+                            <div class="text-retro-cyan text-sm mb-2">${selection.family}</div>
                             <div class="text-retro-yellow">*********************</div>
                         </div>
                     `;
