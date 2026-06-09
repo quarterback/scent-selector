@@ -6,8 +6,10 @@ This is a simple web-based fragrance randomizer that helps you select a fragranc
 ## Features
 - Select **season** (Spring, Summer, Fall, Winter, Shoulder, Anytime)
 - Select **occasion** (Work, Date Night, Going Out, Crowded Spaces, Casual Outdoor)
+- Select **scent family** (Citrus & Fresh, Aquatic & Marine, Green & Herbal, Floral, Woody, Smoky & Incense, Leather, Amber & Resinous, Gourmand & Boozy, Spicy)
 - Randomly generate a **Fragrance of the Day** based on your choices
-- Collection is the union of my Parfumo + Fragrantica "I have" lists (81 fragrances)
+- **Browse by scent family** — click a family to scan everything you own in it, with its season + occasion
+- Collection is the union of my Parfumo + Fragrantica "I have" lists (80 fragrances)
 
 ## Usage
 1. Open the `index.html` file in a web browser.
@@ -25,7 +27,7 @@ You can host this project on:
 - To add or remove fragrances, edit the `fragrances` array in the `<script>` section of `index.html`.
 - Each fragrance object should have:
   ```javascript
-  { name: "Brand | Fragrance Name", season: "Spring", occasion: "Work" }
+  { name: "Brand | Fragrance Name", family: "Woody", season: "Spring", occasion: "Work" }
   ```
 
 ## Future Improvements
